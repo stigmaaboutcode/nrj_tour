@@ -52,15 +52,6 @@ include "config/signinConfig.php";
                                                     <label class="form-label" for="password">Password</label>
                                                     <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
                                                 </div>
-
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="form-check">
-                                                            <input type="checkbox" class="form-check-input" id="customControlInline">
-                                                            <label class="form-label" class="form-check-label" for="customControlInline">Remember me</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 <div class="d-grid mt-4">
                                                     <button class="btn btn-primary waves-effect waves-light" name="login" type="submit">Log In</button>
                                                 </div>
