@@ -23,7 +23,7 @@ class userClass extends ConnectionsClass{
                 join_date DATETIME NOT NULL
             )";
             // EXECUTE THE QUERY TO CREATE TABLE
-            $exe = $this->dbConn()->query($sql);
+            $this->dbConn()->query($sql);
             // CLOSE THE CONNECTION
             $this->dbConn()->close();
         }
