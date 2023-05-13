@@ -56,6 +56,8 @@ class pinClass extends ConnectionsClass{
             $sql = "SELECT code_referral FROM " . $this->table_name . " WHERE pin_uang_muka = '" . $key1 . "' AND date_create = '" . $key2 . "'";
         }elseif($param == "pinPelunasanCheck"){
             $sql = "SELECT code_referral FROM " . $this->table_name . " WHERE pin_pelunasan = '" . $key1 . "' AND date_create = '" . $key2 . "'";
+        }elseif($param == "dataPinUser"){
+            $sql = "SELECT pin_uang_muka, pin_pelunasan FROM " . $this->table_name . " WHERE code_referral = '" . $key1 . "' AND date_create = '" . $key2 . "'";
         }
         // EXECUTE QUERY
         $exe = $this->dbConn()->query($sql);

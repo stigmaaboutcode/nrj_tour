@@ -1,9 +1,9 @@
 <?php  
 // CLASS USER
-class walletClass extends ConnectionsClass{
+class hargaBonusClass extends ConnectionsClass{
 
     // SET ATTRIBUTE TABLE NAME
-    private $table_name = "wallet_user";
+    private $table_name = "harga_bonus";
     
     // CREATE DEFAULT TABLE
     public function __construct(){
@@ -12,24 +12,36 @@ class walletClass extends ConnectionsClass{
             // SET QUERY
             $sql = "CREATE TABLE " . $this->table_name . " (
                 id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                code_referral VARCHAR(7) NOT NULL UNIQUE,
-                bonus_balance DOUBLE NULL DEFAULT '0',
-                poin_balance INT(11) NULL DEFAULT '0'
+                category ENUN('PENJUALAN','UPLINE') NOT NULL,
+                umroh DOUBLE NOT NULL DEFAULT '0',
+                haji DOUBLE NOT NULL DEFAULT '0'
             )";
             // EXECUTE THE QUERY TO CREATE TABLE
-            $this->dbConn()->query($sql);
+            if($this->dbConn()->query($sql)){
+                $default = [
+                    "PENJUALAN" => [2000000,3000000],
+                    "UPLINE" => [250000,500000]
+                ];
+                foreach($default as $field => $values){
+                    $this->insertHargaBonus($field,$values[0],$values[1]);
+                }
+            };
             // CLOSE THE CONNECTION
             $this->dbConn()->close();
         }
     }
 
     // INSERT TABLE
-    public function insertWallet(?string $value1 = null){
+    public function insertHargaBonus(?string $value1 = null, ?string $value2 = null, ?string $value3 = null){
         // SET QUERY
         $sql = "INSERT INTO " . $this->table_name . " (
-            code_referral
+            category,
+            umroh,
+            haji
         ) VALUES(
-            '" . $value1 . "'
+            '" . $value1 . "',
+            '" . $value2 . "',
+            '" . $value3 . "'
         )";
         // EXECUTE THE QUERY TO CREATE TABLE
         $exe = $this->dbConn()->query($sql);
@@ -39,9 +51,9 @@ class walletClass extends ConnectionsClass{
     }
 
     // SELECT TABLE
-    public function selectWallet(?string $key = null){
+    public function selectHargaBonus(?string $key = null){
         // SET QUERY
-        $sql = "SELECT bonus_balance, poin_balance FROM " . $this->table_name . " WHERE code_referral = '" . $key . "'";
+        $sql = "SELECT umroh, haji FROM " . $this->table_name . " WHERE category = '" . $key . "'";
         // EXECUTE QUERY
         $exe = $this->dbConn()->query($sql);
         // SET DATA FROM TABLE
@@ -58,9 +70,9 @@ class walletClass extends ConnectionsClass{
     }
 
     // UPDATE TABLE
-    public function UpdateWallet(?string $field = null, ?string $value = null,?string $key = null){
+    public function UpdateHargaBonus(?string $key = null, ?string $value1 = null, ?string $value2 = null){
         // SET QUERY
-        $sql = "UPDATE " . $this->table_name . " SET " . $field . "  = '" . $value . "' WHERE code_referral = '" . $key . "'";
+        $sql = "UPDATE " . $this->table_name . " SET umroh  = '" . $value1 . "', haji = '" . $value2 . "' WHERE category = '" . $key . "'";
         // EXECUTE THE QUERY TO CREATE TABLE
         $exe = $this->dbConn()->query($sql);
         // CLOSE THE CONNECTION
