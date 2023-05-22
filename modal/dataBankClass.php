@@ -3,7 +3,7 @@
 class dataBankClass extends ConnectionsClass{
 
     // SET ATTRIBUTE TABLE NAME
-    private $table_name = "user";
+    private $table_name = "data_bank_admin";
     
     // CREATE DEFAULT TABLE
     public function __construct(){
@@ -32,7 +32,7 @@ class dataBankClass extends ConnectionsClass{
             no_rek
         ) VALUES(
             '" . $value1 . "',
-            '" . $value2 . "',
+            '" . $value2 . "', 
             '" . $value3 . "'
         )";
         // EXECUTE THE QUERY TO CREATE TABLE
@@ -46,11 +46,11 @@ class dataBankClass extends ConnectionsClass{
     public function selectDataBank(?string $param = null, ?string $key1 = null, ?string $key2 = null, ?string $key3 = null, ?string $key4 = null){
         // SET QUERY
         if($param == "allData"){
-            $sql = "SELECT nama_bank, atas_nama, no_rek FROM " . $this->table_name;
+            $sql = "SELECT * FROM " . $this->table_name;
         }elseif($param == "idData"){
-            $sql = "SELECT nama_bank, atas_nama, no_rek FROM " . $this->table_name . " WHERE id = '" . $key1 . "'";
+            $sql = "SELECT * FROM " . $this->table_name . " WHERE id = '" . $key1 . "' ORDER BY id DESC";
         }elseif($param == "checkUpdate"){
-            $sql = "SELECT id FROM " . $this->table_name . " WHERE nama_bank = '"   . $key1 . "' AND atas_nama = '" . $key2 . "' AND no_rek = '" . $key3 . "' AND id <> '" . $key4 . "'";
+            $sql = "SELECT id FROM " . $this->table_name . " WHERE nama_bank = '" . $key1 . "' AND atas_nama = '" . $key2 . "' AND no_rek = '" . $key3 . "' AND id <> '" . $key4 . "'";
         }elseif($param == "checkInsert"){
             $sql = "SELECT id FROM " . $this->table_name . " WHERE nama_bank = '" . $key1 . "' AND atas_nama = '" . $key2 . "' AND no_rek = '" . $key3 . "'";
         }

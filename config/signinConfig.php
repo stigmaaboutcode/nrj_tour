@@ -30,7 +30,7 @@ if(isset($_POST['login'])){
                     $_SESSION['alertError'] = "akun anda belum diaktifkan!";
                 }else{
                     $_SESSION['loginNRJ'] = true;
-                    $_SESSION['id_user'] = $id_user;
+                    $_SESSION['id_nrjtour'] = $id_user;
                     $_SESSION['alertSuccess'] = "Login Success!";
                     header('Location: dasbor');
                     exit();
