@@ -25,12 +25,14 @@
                     </li>
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
-                            <i class="ri-share-line"></i>
+                            <i class="ri-money-dollar-circle-line "></i>
                             <span>Harga & Bonus</span>
                         </a> 
                         <ul class="sub-menu" aria-expanded="true">
-                            <li><a href="javascript: void(0);">Harga DP</a></li>
-                            <li><a href="javascript: void(0);">Harga Paket Pelunasan</a></li>
+                            <li><a href="setting-harga-dp">Harga DP</a></li>
+                            <li><a href="setting-harga-pelunasan">Harga Paket Pelunasan</a></li>
+                            <li><a href="setting-bonus-penjualan">Bonus Penjualan</a></li>
+                            <li><a href="setting-bonus-upline">Bonus Upline</a></li>
                         </ul>
                     </li>
                     <!-- END TAMPILAN ADMIN -->

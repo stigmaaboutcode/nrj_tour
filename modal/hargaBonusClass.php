@@ -12,7 +12,7 @@ class hargaBonusClass extends ConnectionsClass{
             // SET QUERY
             $sql = "CREATE TABLE " . $this->table_name . " (
                 id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                category ENUN('PENJUALAN','UPLINE') NOT NULL,
+                category ENUM('PENJUALAN','UPLINE') NOT NULL,
                 umroh DOUBLE NOT NULL DEFAULT '0',
                 haji DOUBLE NOT NULL DEFAULT '0'
             )";
