@@ -65,6 +65,8 @@ class userClass extends ConnectionsClass{
         // SET QUERY
         if($param == "oneCondition"){
             $sql = "SELECT * FROM " . $this->table_name . " WHERE " . $key1 . " = '" . $key2 . "'";
+        }elseif($param == "checkForUpdate"){
+            $sql = "SELECT * FROM " . $this->table_name . " WHERE " . $key1 . " = '" . $key2 . "' AND code_referral <> '" . $key3 . "'";
         }
         // EXECUTE QUERY
         $exe = $this->dbConn()->query($sql);
@@ -82,12 +84,12 @@ class userClass extends ConnectionsClass{
     }
 
     // UPDATE TABLE
-    public function UpdateUser(?string $param = null, ?string $key = null, ?string $value1 = null, ?string $value2 = null){
+    public function UpdateUser(?string $param = null, ?string $key = null, ?string $value1 = null, ?string $value2 = null, ?string $value3 = null){
         // SET QUERY
         if($param == "editPass"){
             $sql = "UPDATE " . $this->table_name . " SET password  = '" . $value1 . "' WHERE code_referral = '" . $key . "'";
         }elseif($param == "editData"){
-            $sql = "UPDATE " . $this->table_name . " SET name  = '" . $value1 . "', no_telpn = '" . $value2 . "' WHERE code_referral = '" . $key . "'";
+            $sql = "UPDATE " . $this->table_name . " SET email = '" . $value1 . "', name  = '" . $value2 . "', no_telpn = '" . $value3 . "' WHERE code_referral = '" . $key . "'";
         }
         // EXECUTE THE QUERY TO CREATE TABLE
         $exe = $this->dbConn()->query($sql);

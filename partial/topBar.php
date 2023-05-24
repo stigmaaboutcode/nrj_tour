@@ -42,13 +42,13 @@
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-2.png"
                         alt="Header Avatar">
-                    <span class="d-none d-xl-inline-block ms-1"><?= $name ?></span>
+                    <span class="d-none d-xl-inline-block ms-1"><?= explode(" ",$name)[0] ?></span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
                     <!-- item-->
-                    <a class="dropdown-item" href="#"><i class="ri-user-line align-middle me-1"></i> Profil Saya</a>
-                    <a class="dropdown-item" href="#"><i class="ri-lock-unlock-line align-middle me-1"></i> Ganti Password</a>
+                    <a class="dropdown-item" href="edit-profil"><i class="ri-user-line align-middle me-1"></i> Profil Saya</a>
+                    <a class="dropdown-item" href="ganti-password"><i class="ri-lock-unlock-line align-middle me-1"></i> Ganti Password</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-danger" href="logout.php"><i
                             class="ri-shut-down-line align-middle me-1 text-danger"></i> Logout</a>
