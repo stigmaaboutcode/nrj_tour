@@ -64,7 +64,7 @@ class userClass extends ConnectionsClass{
     public function selectUser(?string $param = null, ?string $key1 = null, ?string $key2 = null, ?string $key3 = null, ?string $key4 = null){
         // SET QUERY
         if($param == "oneCondition"){
-            $sql = "SELECT * FROM " . $this->table_name . " WHERE " . $key1 . " = '" . $key2 . "'";
+            $sql = "SELECT * FROM " . $this->table_name . " WHERE " . $key1 . " = '" . $key2 . "' ORDER BY join_date DESC";
         }elseif($param == "checkForUpdate"){
             $sql = "SELECT * FROM " . $this->table_name . " WHERE " . $key1 . " = '" . $key2 . "' AND code_referral <> '" . $key3 . "'";
         }
@@ -90,6 +90,8 @@ class userClass extends ConnectionsClass{
             $sql = "UPDATE " . $this->table_name . " SET password  = '" . $value1 . "' WHERE code_referral = '" . $key . "'";
         }elseif($param == "editData"){
             $sql = "UPDATE " . $this->table_name . " SET email = '" . $value1 . "', name  = '" . $value2 . "', no_telpn = '" . $value3 . "' WHERE code_referral = '" . $key . "'";
+        }elseif($param == "statusUser"){
+            $sql = "UPDATE " . $this->table_name . " SET status = '" . $value1 . "' WHERE code_referral = '" . $key . "'";
         }
         // EXECUTE THE QUERY TO CREATE TABLE
         $exe = $this->dbConn()->query($sql);

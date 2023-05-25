@@ -28,14 +28,14 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="javascript: void(0);" class="waves-effect">
+                        <a href="pin-transaksi" class="waves-effect">
                             <i class="ri-rotate-lock-line"></i>
                             <span>Pin Transaksi</span>
                         </a>
                     </li>
                     <li class="menu-title">Data & Laporan</li>
                     <li>
-                        <a href="javascript: void(0);" class="waves-effect">
+                        <a href="data-member" class="waves-effect">
                             <i class="ri-group-line"></i>
                             <span>Konsultan</span>
                         </a>
@@ -90,7 +90,7 @@
                 <?php }else{ ?>
                     <!-- ========== START TAMPILAN MEMBER ========== -->
                     <li>
-                        <a href="javascript: void(0);" class="waves-effect">
+                        <a href="order-paket" class="waves-effect">
                             <i class="ri-add-circle-line"></i>
                             <span>Order Paket</span>
                         </a>
@@ -108,7 +108,7 @@
                     </li>
                     <li class="menu-title">Data & Laporan</li>
                     <li>
-                        <a href="javascript: void(0);" class="waves-effect">
+                        <a href="data-member" class="waves-effect">
                             <i class="ri-group-line"></i>
                             <span>Rekrutmen</span>
                         </a>
