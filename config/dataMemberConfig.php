@@ -56,9 +56,11 @@ function dataTable(){
                 </td>
                 <td> 25 Paket Umroh </td>
                 <td>' . colorStatus($row['status']) . '</td>
-                <td>' . $row['join_date'] . '</td>
-                <td>' . $btn . '</td>
-            </tr>';
+                <td>' . $row['join_date'] . '</td>';
+        if($role_user != "KONSULTAN"){
+            echo'<td>' . $btn . '</td>';
+        }
+        echo'</tr>';
     }
 }
 

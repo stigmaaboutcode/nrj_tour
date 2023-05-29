@@ -97,13 +97,29 @@
                     </li>
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
-                            <i class="ri-repeat-2-line"></i><span class="badge rounded-pill bg-primary float-end">3</span>
+                            <i class="ri-repeat-2-line"></i>
+                            <span class="badge rounded-pill bg-primary float-end">3</span>
                             <span>Proses Order</span>
                         </a> 
                         <ul class="sub-menu" aria-expanded="true">
-                            <li><a href="javascript: void(0);"><span class="badge rounded-pill bg-primary float-end">3</span>Pending DP</a></li>
-                            <li><a href="javascript: void(0);"><span class="badge rounded-pill bg-primary float-end">3</span>Menunggu Pelunasan</a></li>         
-                            <li><a href="javascript: void(0);"><span class="badge rounded-pill bg-primary float-end">3</span>Pending Pelunasan</a></li>         
+                            <li>
+                                <a href="pending-dp">
+                                    <span class="badge rounded-pill bg-primary float-end">3</span>
+                                    Pending DP
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript: void(0);">
+                                    <span class="badge rounded-pill bg-primary float-end">3</span>
+                                    Menunggu Pelunasan
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript: void(0);">
+                                    <span class="badge rounded-pill bg-primary float-end">3</span>
+                                    Pending Pelunasan
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="menu-title">Data & Laporan</li>

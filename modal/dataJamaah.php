@@ -14,7 +14,7 @@ class dataJamaahClass extends ConnectionsClass{
                 id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 code_order VARCHAR(20) NOT NULL UNIQUE,
                 foto_ktp TEXT NOT NULL,
-                nik INT(19) NOT NULL,
+                nik TEXT NOT NULL,
                 nama VARCHAR(150) NOT NULL,
                 tempat_lahir VARCHAR(150) NOT NULL,
                 tgl_lahir DATE NOT NULL,
@@ -25,8 +25,9 @@ class dataJamaahClass extends ConnectionsClass{
                 id_kab_kota INT(11) NOT NULL,
                 kec TEXT NOT NULL,
                 id_kec INT(11) NOT NULL,
-                jk ENUM('LAKI-LAKI','PEREMPUAN') NOT NULL,
-                status_perkawinan ENUM('SUDAH MENIKAN','BELUM MENIKAH') NOT NULL
+                jk ENUM('Laki-laki','Perempuan') NOT NULL,
+                status_perkawinan ENUM('Belum Kawin','Sudah Kawin','Cerai Hidup','Cerai Mati') NOT NULL,
+                tgl_berangkat DATE NULL
             )";
             // EXECUTE THE QUERY TO CREATE TABLE
             $this->dbConn()->query($sql);
@@ -66,10 +67,10 @@ class dataJamaahClass extends ConnectionsClass{
             '" . $value9 . "',
             '" . $value10 . "',
             '" . $value11 . "',
-            '" . $value12. "',
-            '" . $value13. "',
+            '" . $value12 . "',
+            '" . $value13 . "',
             '" . $value14 . "',
-            '" . $value15 . "',
+            '" . $value15 . "'
         )";
         // EXECUTE THE QUERY TO CREATE TABLE
         $exe = $this->dbConn()->query($sql);
@@ -82,7 +83,7 @@ class dataJamaahClass extends ConnectionsClass{
     public function selectDataJamaah(?string $param = null, ?string $key1 = null, ?string $key2 = null, ?string $key3 = null, ?string $key4 = null){
         // SET QUERY
         if($param == "oneCondition"){
-            $sql = "SELECT * FROM " . $this->table_name . " WHERE " . $key1 . " = '" . $key2 . "' ORDER BY date DESC";
+            $sql = "SELECT * FROM " . $this->table_name . " WHERE " . $key1 . " = '" . $key2 . "'";
         }
         // EXECUTE QUERY
         $exe = $this->dbConn()->query($sql);

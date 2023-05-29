@@ -19,6 +19,7 @@ class dataPenjualanClass extends ConnectionsClass{
                 is_diskon ENUM('YA','TIDAK') NOT NULL,
                 uang_muka DOUBLE NOT NULL,
                 bukti_tf_uang_muka TEXT NOT NULL,
+                paket_pelunasan ENUM('REGULER','EKSEKUTIF','RAMADHAN','SYAWAL') NULL,
                 uang_pelunasan DOUBLE NULL DEFAULT '0',
                 bukti_tf_pelunasan TEXT NULL,
                 status ENUM('PENDING','DITOLAK','MENUNGGU PELUNASAN','MENUNGGU KONFIRMASI PELUNASAN','PELUNASAN DITOLAK','LUNAS') NOT NULL DEFAULT 'PENDING',
@@ -65,6 +66,8 @@ class dataPenjualanClass extends ConnectionsClass{
         // SET QUERY
         if($param == "oneCondition"){
             $sql = "SELECT * FROM " . $this->table_name . " WHERE " . $key1 . " = '" . $key2 . "' ORDER BY date DESC";
+        }elseif($param == "dateUser"){
+            $sql = "SELECT * FROM " . $this->table_name . " WHERE perekrut = '" . $key1 . "' AND (date >= '" . $key2 . " 00:00:00' AND date <= '" . $key3 . " 23:59:59') ORDER BY date DESC LIMIT 1";
         }else{
             $sql = "SELECT * FROM " . $this->table_name . " ORDER BY date DESC";
         }
@@ -101,6 +104,8 @@ class dataPenjualanClass extends ConnectionsClass{
         $this->dbConn()->close();
         return $exe;
     }
+
+    
 
 }
 

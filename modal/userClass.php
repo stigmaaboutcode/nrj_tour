@@ -38,9 +38,7 @@ class userClass extends ConnectionsClass{
             name,
             no_telpn,
             password,
-            role_user,
             upline,
-            status,
             join_date
         ) VALUES(
             '" . $value1 . "',
@@ -49,9 +47,7 @@ class userClass extends ConnectionsClass{
             '" . $value4 . "',
             '" . $value5 . "',
             '" . $value6 . "',
-            '" . $value7 . "',
-            '" . $value8 . "',
-            '" . $value9 . "'
+            '" . $value7 . "'
         )";
         // EXECUTE THE QUERY TO CREATE TABLE
         $exe = $this->dbConn()->query($sql);
