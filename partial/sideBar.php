@@ -1,3 +1,6 @@
+<?php  
+
+?>
 <div class="vertical-menu">
 
     <div data-simplebar class="h-100">
@@ -22,7 +25,7 @@
                             <span>Permintaan</span>
                         </a> 
                         <ul class="sub-menu" aria-expanded="true">
-                            <li><a href="javascript: void(0);"></i><span class="badge rounded-pill bg-primary float-end">3</span>Pembayaran DP</a></li>
+                            <li><a href="pending-dp"></i><span class="badge rounded-pill bg-primary float-end">3</span>Pembayaran DP</a></li>
                             <li><a href="javascript: void(0);"></i><span class="badge rounded-pill bg-primary float-end">3</span>Pembayaran Pelunasan</a></li>
                             <li><a href="javascript: void(0);"></i><span class="badge rounded-pill bg-primary float-end">3</span>Withdraw Komisi</a></li>
                         </ul>

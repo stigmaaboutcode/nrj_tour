@@ -11,7 +11,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>PENDING DP | NRJ TOUR</title>
+    <title> <?= $role_user == "ADMIN" ? "PEMBAYARAN DP" : "PENDING DP" ?> | NRJ TOUR</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesdesign" name="author" />
@@ -76,13 +76,15 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 class="mb-sm-0">Pending DP</h4>
+                                <h4 class="mb-sm-0"><?= $role_user == "ADMIN" ? "Pembayaran DP" : "Pending DP" ?></h4>
 
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Proses Order</a>
+                                        <li class="breadcrumb-item"><a
+                                                href="javascript: void(0);"><?= $role_user == "ADMIN" ? "Permintaan" : "Proses Order" ?></a>
                                         </li>
-                                        <li class="breadcrumb-item active">Pending DP</li>
+                                        <li class="breadcrumb-item active">
+                                            <?= $role_user == "ADMIN" ? "Pembayaran DP" : "Pending DP" ?></li>
                                     </ol>
                                 </div>
 
@@ -94,18 +96,25 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Data Table</h5>
+                                </div>
                                 <div class="card-body">
-                                    <table id="datatable-buttons" class="table table-striped dt-responsive table-bordered nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <div id="downloadPdfBtn"></div>
+                                    <table id="datatable" class="table table-striped dt-responsive table-bordered nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th>No. Order</th>
+                                                <?php if($role_user == "ADMIN"){ ?>
+                                                <th>Perekrut</th>
+                                                <?php } ?>
                                                 <th>Harga</th>
                                                 <th>Diskon</th>
                                                 <th>Data Jamaah</th>
                                                 <th>Status</th>
                                                 <th>Tgl Order</th>
-                                                <th>Aksi</th> 
+                                                <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -120,48 +129,120 @@
                     <!-- ========== START MODAL ========== -->
                     <?php  
                     $data = $dataPenjualanClass->selectDataPenjualan("oneCondition", "perekrut", $_SESSION['id_nrjtour']);
+                    if($role_user == "ADMIN"){
+                        $data = $dataPenjualanClass->selectDataPenjualan("all");
+                    }
                     foreach($data['data'] as $row){
-                        if($row['status'] == "PENDING"){
+                        $fee = $row['uang_muka'] > 0 ? "Rp." . number_format($row['uang_muka'],0,",",".") : "Gratis";
+                        $show = $row['status'] == "PENDING" || $row['status'] == "DITOLAK" ? true : false;
+                        if($role_user == "ADMIN"){
+                            $show = $row['status'] == "PENDING" ? true : false;
+                        }
+                        if($show){
                     ?>
-                            <div class="modal fade" id="detailJamaah<?= $row['code_order'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Data Jamaah</h1>
-                                        </div>
-                                        <div class="modal-body">
-                                            <h6>Foto KTP</h6>
-                                            <br>
-                                            <img src="<?= dataJamaah($row['code_order'])['foto_ktp'] ?>" alt="" style="width:100%;">
-                                            <hr>
-                                            <div class="mb-1" style="font-size: smaller;">
-                                                NIK : <?= dataJamaah($row['code_order'])['nik'] ?>
-                                            </div>
-                                            <div class="mb-1" style="font-size: smaller;">
-                                                Nama Sesuai KTP : <?= dataJamaah($row['code_order'])['nama'] ?>
-                                            </div>
-                                            <div class="mb-1" style="font-size: smaller;">
-                                                Tempat, Tgl Lahir : <?= dataJamaah($row['code_order'])['tempat_lahir'] ?>, <?= dataJamaah($row['code_order'])['tgl_lahir'] ?>
-                                            </div>
-                                            <div class="mb-1" style="font-size: smaller;">
-                                                Jenis Kelamin : <?= dataJamaah($row['code_order'])['jk'] ?>
-                                            </div>
-                                            <div class="mb-1" style="font-size: smaller;">
-                                                Status Perkawinan : <?= dataJamaah($row['code_order'])['status_perkawinan'] ?>
-                                            </div>
-                                            <div class="mb-1" style="font-size: smaller;">
-                                                Alamat : <br> 
-                                                <?= dataJamaah($row['code_order'])['kab_kota'] ?> - <?= dataJamaah($row['code_order'])['prov'] ?> <br>
-                                                <?= dataJamaah($row['code_order'])['kec'] ?> <br>
-                                                <?= dataJamaah($row['code_order'])['detail_alamat'] ?>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        </div>
+                    <div class="modal fade" id="detailJamaah<?= $row['code_order'] ?>" tabindex="-1"
+                        aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Data Jamaah</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <h6>Foto KTP</h6>
+                                    <br>
+                                    <img src="<?= dataJamaah($row['code_order'])['foto_ktp'] ?>" alt=""
+                                        style="width:100%;">
+                                    <hr>
+                                    <div class="mb-1" style="font-size: smaller;">
+                                        NIK : <?= dataJamaah($row['code_order'])['nik'] ?>
+                                    </div>
+                                    <div class="mb-1" style="font-size: smaller;">
+                                        Nama Sesuai KTP : <?= dataJamaah($row['code_order'])['nama'] ?>
+                                    </div>
+                                    <div class="mb-1" style="font-size: smaller;">
+                                        Tempat, Tgl Lahir : <?= dataJamaah($row['code_order'])['tempat_lahir'] ?>,
+                                        <?= dataJamaah($row['code_order'])['tgl_lahir'] ?>
+                                    </div>
+                                    <div class="mb-1" style="font-size: smaller;">
+                                        Jenis Kelamin : <?= dataJamaah($row['code_order'])['jk'] ?>
+                                    </div>
+                                    <div class="mb-1" style="font-size: smaller;">
+                                        Status Perkawinan : <?= dataJamaah($row['code_order'])['status_perkawinan'] ?>
+                                    </div>
+                                    <div class="mb-1" style="font-size: smaller;">
+                                        Alamat : <br>
+                                        <?= dataJamaah($row['code_order'])['kab_kota'] ?> -
+                                        <?= dataJamaah($row['code_order'])['prov'] ?> <br>
+                                        <?= dataJamaah($row['code_order'])['kec'] ?> <br>
+                                        <?= dataJamaah($row['code_order'])['detail_alamat'] ?>
                                     </div>
                                 </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                    <?php if($row['status'] == "DITOLAK"){ ?>
+                    <div class="modal fade" id="resend<?= $row['code_order'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <form enctype="multipart/form-data" action="" method="post" class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Kirim ulang Permintaan</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <?php if($fee == "Gratis"){ ?>
+                                        <h5>Gratis</h5>
+                                    <?php }else{ ?>
+                                        <h5><?= $fee ?></h5>
+                                        <hr>
+                                        <div class="mb-2">
+                                            <label for="rek" class="form-label">Rekening Tujuan</label>
+                                            <select required name="rek" id="rek" class="form-select form-select-sm">
+                                                <option value="">--PILIH REKENING TUJUAN--</option>
+                                                <?= optRekTujuan() ?>
+                                            </select>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label for="buktiTf" class="form-label">Bukti Transfer</label>
+                                            <input required type="file" name="buktiTf" id="buktiTf" class="form-control form-control-sm">
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="hidden" name="idOrder" value="<?= $row['code_order'] ?>">
+                                    <button type="submit" name="resend" class="btn btn-success">Submit</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    <?php if($role_user == "ADMIN"){ ?>
+                    <div class="modal fade" id="confirmDp<?= $row['code_order'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Bukti Pembayaran</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <?php if($fee == "Gratis"){ ?>
+                                        <h5>Gratis</h5>
+                                    <?php }else{ ?>
+                                        <img src="<?= $row['bukti_tf_uang_muka'] ?>" alt="" style="width:100%;">
+                                    <?php } ?>
+                                </div>
+                                <form action="" method="post" class="modal-footer">
+                                    <input type="hidden" name="idOrder" value="<?= $row['code_order'] ?>">
+                                    <button type="submit" name="terima" class="btn btn-success">Terima</button>
+                                    <button type="submit" name="tolak" class="btn btn-danger">Tolak</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
                     <?php  
                         }
                     }
@@ -206,6 +287,50 @@
 
     <!-- Datatable init js -->
     <script src="assets/js/pages/datatables.init.js"></script>
+    <!-- PRINT / PDF -->
+    <script>
+        // Fungsi untuk menginisialisasi DataTable dan menambahkan event listener pada tombol download PDF dan print
+        function initializeDataTable() {
+            var table = $('#datatable').DataTable();
+
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [{
+                        extend: 'pdfHtml5',
+                        className: 'buttons-pdf buttons-html5',
+                        customize: function (doc) {
+                            // Mengatur orientasi menjadi landscape
+                            doc.pageOrientation = 'landscape';
+
+                            // Mengatur style agar data jamaah pada kolom "Data Jamaah" ditampilkan dalam satu baris
+                            doc.content[1].table.body.forEach(function (row) {
+                                if (row[5].text) {
+                                    row[5].text = row[5].text.replace(/<br\s*\/?>/ig, ' ');
+                                }
+                            });
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        className: 'buttons-print',
+                        customize: function (win) {
+                            // Mengatur orientasi menjadi landscape
+                            $(win.document.body).find('table').addClass('dt-print-view').css('width',
+                                '100%');
+                            $(win.document.body).find('table.dt-print-view').removeClass(
+                                'table-bordered').removeClass('nowrap').addClass('table-striped');
+                        }
+                    }
+                ]
+            });
+
+            table.buttons().container().appendTo('#downloadPdfBtn');
+        }
+
+        $(document).ready(function () {
+            // Panggil fungsi untuk menginisialisasi DataTable
+            initializeDataTable();
+        });
+    </script>
 
     <script src="assets/js/app.js"></script>
     <!-- Sweet Alerts js -->

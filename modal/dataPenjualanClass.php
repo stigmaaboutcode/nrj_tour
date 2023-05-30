@@ -91,6 +91,8 @@ class dataPenjualanClass extends ConnectionsClass{
         // SET QUERY
         if($param == "changeStatus"){
             $sql = "UPDATE " . $this->table_name . " SET status  = '" . $value1 . "' WHERE " . $key1 . " = '" . $key2 . "'";
+        }elseif($param == "resendDp"){
+            $sql = "UPDATE " . $this->table_name . " SET bukti_tf_uang_muka = '" . $value1 . "', status = 'PENDING' WHERE " . $key1 . " = '" . $key2 . "'";
         }elseif($param == "confirmDp"){
             $sql = "UPDATE " . $this->table_name . " SET uang_pelunasan = '" . $value1 . "', status = 'MENUNGGU PELUNASAN' WHERE " . $key1 . " = '" . $key2 . "'";
         }elseif($param == "pelunasan"){
@@ -105,7 +107,16 @@ class dataPenjualanClass extends ConnectionsClass{
         return $exe;
     }
 
-    
+    // DELETE TABLE
+    public function deleteDataPenjualan(?string $key = null){
+        // SET QUERY
+        $sql = "DELETE FROM " . $this->table_name . " WHERE code_order = '" . $key . "'";
+        // EXECUTE THE QUERY TO CREATE TABLE
+        $exe = $this->dbConn()->query($sql);
+        // CLOSE THE CONNECTION
+        $this->dbConn()->close();
+        return $exe;
+    }
 
 }
 

@@ -96,6 +96,17 @@ class userClass extends ConnectionsClass{
         return $exe;
     }
 
+    // DELETE TABLE
+    public function deleteUser(?string $key = null){
+        // SET QUERY
+        $sql = "DELETE FROM " . $this->table_name . " WHERE code_referral = '" . $key . "'";
+        // EXECUTE THE QUERY TO CREATE TABLE
+        $exe = $this->dbConn()->query($sql);
+        // CLOSE THE CONNECTION
+        $this->dbConn()->close();
+        return $exe;
+    }
+
 }
 
 ?>

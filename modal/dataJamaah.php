@@ -119,6 +119,17 @@ class dataJamaahClass extends ConnectionsClass{
     //     return $exe;
     // }
 
+    // DELETE TABLE
+    public function deleteDataJamaah(?string $key = null){
+        // SET QUERY
+        $sql = "DELETE FROM " . $this->table_name . " WHERE code_order = '" . $key . "'";
+        // EXECUTE THE QUERY TO CREATE TABLE
+        $exe = $this->dbConn()->query($sql);
+        // CLOSE THE CONNECTION
+        $this->dbConn()->close();
+        return $exe;
+    }
+
 }
 
 ?>

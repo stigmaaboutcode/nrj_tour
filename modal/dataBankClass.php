@@ -12,9 +12,9 @@ class dataBankClass extends ConnectionsClass{
             // SET QUERY
             $sql = "CREATE TABLE " . $this->table_name . " (
                 id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                nama_bank VARCHAR(50) NOT NULL,
+                nama_bank VARCHAR(150) NOT NULL,
                 atas_nama VARCHAR(250) NOT NULL,
-                no_rek INT(19) NOT NULL
+                no_rek TEXT NOT NULL
             )";
             // EXECUTE THE QUERY TO CREATE TABLE
             $this->dbConn()->query($sql);
