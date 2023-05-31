@@ -21,7 +21,7 @@ if(isset($_POST['addPin'])){
         // CHECK PIN IF EXIST
         $pinCheck = $pinClass->selectPin("dataPinUser",$row['code_referral'],$dateNow);
         if($pinCheck['nums'] == 0){
-            $insertPin = $pinClass->insertPin($row['code_referral'],pinDp(),pinPelunasan(),$dateNow);
+            $insertPin = $pinClass->insertPin($row['code_referral'],pinFree(),pinDp(),pinPelunasan(),$dateNow);
             $totalCreatePin += 1;
         }
     }
@@ -48,8 +48,10 @@ function dataTable(){
                 <td>
                     <strong>' . $row['name'] . '</strong><br>
                 </td>
+                <td> ' . dataPinUser($row['code_referral'])['free'] . ' </td>
                 <td> ' . dataPinUser($row['code_referral'])['dp'] . ' </td>
                 <td> ' . dataPinUser($row['code_referral'])['pelunasan'] . ' </td>
+                <td> ' . dataPinUser($row['code_referral'])['tgl'] . ' </td>
             </tr>';
     }
 }
@@ -62,12 +64,16 @@ function dataPinUser($user){
     $data = $pinClass->selectPin("dataPinUser", $user, $dateNow);
 
     if($data['nums'] == 0){
+        $result['free'] = '<span class="badge rounded-pill alert-danger">Belum ada</span>';
         $result['dp'] = '<span class="badge rounded-pill alert-danger">Belum ada</span>';
         $result['pelunasan'] = '<span class="badge rounded-pill alert-danger">Belum ada</span>';
+        $result['tgl'] = '-,-';
     }else{
         foreach($data['data'] as $row){
+            $result['free'] = $row['pin_free'];
             $result['dp'] = $row['pin_uang_muka'];
             $result['pelunasan'] = $row['pin_pelunasan'];
+            $result['tgl'] = ubahFormatTanggal($row['date_create']);
         }
     }
     return $result;
@@ -85,6 +91,18 @@ function generatePin() {
     return $pin;
 }
 
+function pinFree(){
+    global $dateNow;
+    global $pinClass;
+    $pin = generatePin();
+
+    $dataPin = $pinClass->selectPin("pinFreeCheck",$pin,$dateNow);
+    if($dataPin['nums'] > 0){
+        return pinFree();
+    }else{
+        return $pin;
+    }
+}
 function pinDp(){
     global $dateNow;
     global $pinClass;
@@ -108,5 +126,31 @@ function pinPelunasan(){
     }else{
         return $pin;
     }
+}
+
+function ubahFormatTanggal($tanggal){
+    $bulan = array(
+        1 => 'Januari',
+        2 => 'Februari',
+        3 => 'Maret',
+        4 => 'April',
+        5 => 'Mei',
+        6 => 'Juni',
+        7 => 'Juli',
+        8 => 'Agustus',
+        9 => 'September',
+        10 => 'Oktober',
+        11 => 'November',
+        12 => 'Desember'
+    );
+
+    $tanggalArr = explode('-', $tanggal);
+    if(intval($tanggalArr[2]) < 10){
+        $tanggalBaru = '0' . intval($tanggalArr[2]) . ' ' . $bulan[intval($tanggalArr[1])] . ' ' . $tanggalArr[0];
+    }else{
+        $tanggalBaru = intval($tanggalArr[2]) . ' ' . $bulan[intval($tanggalArr[1])] . ' ' . $tanggalArr[0];
+    }
+
+    return $tanggalBaru;
 }
 ?>

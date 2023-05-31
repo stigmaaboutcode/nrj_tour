@@ -19,7 +19,7 @@ if(isset($_GET['idOrder']) && isset($_GET['param'])){
             $fotoBuktiTf = $row['bukti_tf_uang_muka'];
             $konsultan = $row['direkrut'];
         }
-        if($statusForAksi == "PENDING"){
+        if($statusForAksi == "PENDING" || $statusForAksi == "DITOLAK"){
             $deleteKonsultan = true;
             // CHECK DATA KONSULTAN
             $checkKonsultan = $userClass->selectUser("oneCondition","code_referral",$konsultan);
@@ -167,7 +167,7 @@ function dataTable(){
         $data = $dataPenjualanClass->selectDataPenjualan("all");
     }
     foreach($data['data'] as $row){
-        $btn = $row['status'] == "PENDING" ? '<a href="pending-dp?idOrder=' . $row['code_order'] . '&param=delete" class="btn btn-sm btn-danger"><i class="mx-auto ri-delete-bin-line"></i></a>' : '<a href="#resend' . $row['code_order'] . '" data-bs-toggle="modal" class="btn btn-sm btn-warning"><i class="mx-auto ri-restart-line"></i></a>';;
+        $btn = $row['status'] == "PENDING" ? '<a href="pending-dp?idOrder=' . $row['code_order'] . '&param=delete" class="btn btn-sm btn-danger"><i class="mx-auto ri-delete-bin-line"></i></a>' : '<a href="#resend' . $row['code_order'] . '" data-bs-toggle="modal" class="btn btn-sm btn-warning"><i class="mx-auto ri-restart-line"></i></a><a href="pending-dp?idOrder=' . $row['code_order'] . '&param=delete" class="btn btn-sm btn-danger"><i class="mx-auto ri-delete-bin-line"></i></a>';
         $show = $row['status'] == "PENDING" || $row['status'] == "DITOLAK" ? true : false;
         if($role_user == "ADMIN"){
             $btn = '<a href="#confirmDp' . $row['code_order'] . '" data-bs-toggle="modal" class="btn btn-sm btn-success"><i class="mx-auto ri-check-line"></i></a>';
@@ -177,7 +177,7 @@ function dataTable(){
             $fee = $row['uang_muka'] > 0 ? "Rp." . number_format($row['uang_muka'],0,",",".") : "Gratis";
             echo '<tr>
                     <th> ' . $num++ . ' </th>
-                    <td class="dataJamaah"><strong>' . $row['code_order'] . '</strong><br><i>(' . $row['category'] . ')</i></td>';
+                    <td><strong>' . $row['code_order'] . '</strong><br><i>(' . $row['category'] . ')</i></td>';
             if($role_user == "ADMIN"){
                 echo '<td>
                         <strong>' . dataUser($row['perekrut'])['name'] . ' (' . $row['perekrut'] . ')</strong><br>
@@ -187,7 +187,7 @@ function dataTable(){
             }
             echo   '<td> ' . $fee . ' </td>
                     <td> ' . $row['is_diskon'] . ' </td>
-                    <td class="dataJamaah">
+                    <td>
                         <strong>' . dataUser($row['direkrut'])['name'] . ' (' . $row['direkrut'] . ')</strong><br>
                         <i>' . dataUser($row['direkrut'])['email'] . '</i><br> 
                         <i>+62' . dataUser($row['direkrut'])['no_telpn'] . '</i><a href="https://api.whatsapp.com/send?phone=62' . dataUser($row['direkrut'])['no_telpn'] . '" class="btn btn-sm text-success radius-5"><i class="mx-auto ri-whatsapp-line"></i></a><br>

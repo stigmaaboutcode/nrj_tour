@@ -94,13 +94,16 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <table id="datatable-buttons" class="table table-striped dt-responsive table-bordered nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <div id="downloadPdfBtn"></div>
+                                    <table id="datatable" class="table table-striped dt-responsive table-bordered nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th>Konsultan</th>
+                                                <th>Pin Free</th>
                                                 <th>Pin DP</th>
                                                 <th>Pin Pelunasan</th>
+                                                <th>Tanggal</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -149,7 +152,50 @@
 
     <!-- Datatable init js -->
     <script src="assets/js/pages/datatables.init.js"></script>
+    <!-- PRINT / PDF -->
+    <script>
+        // Fungsi untuk menginisialisasi DataTable dan menambahkan event listener pada tombol download PDF dan print
+        function initializeDataTable() {
+            var table = $('#datatable').DataTable();
 
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [{
+                        extend: 'pdfHtml5',
+                        className: 'buttons-pdf buttons-html5',
+                        customize: function (doc) {
+                            // Mengatur orientasi menjadi landscape
+                            doc.pageOrientation = 'portrait';
+
+                            // Mengatur style agar data jamaah pada kolom "Data Jamaah" ditampilkan dalam satu baris
+                            doc.content[1].table.body.forEach(function (row) {
+                                if (row[5].text) {
+                                    row[5].text = row[5].text.replace(/<br\s*\/?>/ig, ' ');
+                                }
+                            });
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        className: 'buttons-print',
+                        customize: function (win) {
+                            // Mengatur orientasi menjadi landscape
+                            $(win.document.body).find('table').addClass('dt-print-view').css('width',
+                                '100%');
+                            $(win.document.body).find('table.dt-print-view').removeClass(
+                                'table-bordered').removeClass('nowrap').addClass('table-striped');
+                        }
+                    }
+                ]
+            });
+
+            table.buttons().container().appendTo('#downloadPdfBtn');
+        }
+
+        $(document).ready(function () {
+            // Panggil fungsi untuk menginisialisasi DataTable
+            initializeDataTable();
+        });
+    </script>
     <script src="assets/js/app.js"></script>
     <!-- Sweet Alerts js -->
     <script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
