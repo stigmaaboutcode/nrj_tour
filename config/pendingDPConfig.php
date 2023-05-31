@@ -43,6 +43,7 @@ if(isset($_GET['idOrder']) && isset($_GET['param'])){
                     unlink($fotoKtp);
                     $deleteDataJamaah = $dataJamaahClass->deleteDataJamaah($idOrder);
                     if($deleteDataJamaah){
+                        
                         $_SESSION['alertSuccess'] = "Data terhapus.";
                         header('Location: pending-dp');
                         exit();

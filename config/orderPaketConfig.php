@@ -18,6 +18,25 @@ $formatInputClass = new formatInputClass();
 $dateNow = $formatInputClass->date()['dateNow'];
 $dateTimeNow = $formatInputClass->date()['dateTimeNow'];
 
+// DATA URL FOR DISKON POIN
+$jumlahPoin = "Nothing";
+if(isset($_GET['usePoin'])){
+    $usePoin = $_GET['usePoin']; // DATA URL
+    // PROBADI OR GRUP POIN
+    if($usePoin == "ya"){
+        // JUMLAH POIN
+        $jumlahPoin = walletUser()['poin'];
+        // UNTUK POIN PRIBADI HARUS LEBIH DARI ATAU SAMA DENGAN 10 UNTUK DAPAT DIGUNAKAN 
+        if($jumlahPoin < 10){
+            header('Location: dasbor');
+            exit();
+        }
+    }else{
+        header('Location: dasbor');
+        exit();
+    }
+}
+
 // VALIDATE PIN
 if(isset($_POST['submitPin'])){
     $pinInput = strtoupper(trim($_POST['pin']));
@@ -42,57 +61,58 @@ if(isset($_POST['submitPin'])){
     }
 }
 
-// DATA URL FOR DISKON POIN
-$jumlahPoin = "Nothing";
-if(isset($_GET['usePoin'])){
-    $usePoin = $_GET['usePoin']; // DATA URL
-    // PROBADI OR GRUP POIN
-    if($usePoin == "ya"){
-        // JUMLAH POIN
-        $jumlahPoin = walletUser()['poin'];
-        // UNTUK POIN PRIBADI HARUS LEBIH DARI ATAU SAMA DENGAN 10 UNTUK DAPAT DIGUNAKAN 
-        if($jumlahPoin < 10){
-            header('Location: dasbor');
-            exit();
-        }
-    }else{
-        header('Location: dasbor');
-        exit();
-    }
-}
-
 // SAVE ORDER
 if(isset($_POST['createOrder'])){
     // DATA PEMBAYARAN
-    $isDiskon = "YA";
+    $isDiskon = "GRATIS DP & PELUNASAN";
 
     // AKUN CALON KONSULTAN
     $codeReferralKonsultan = $_SESSION['id_nrjtour'];
     $inputKonsultan = true;
+    // TIDAK MENGGUNAKAN POIN
     if(!isset($_GET['usePoin'])){
-        // DATA CALON KONSULTAN
-        $namakonsultan = ucwords(trim($_POST['namakonsultan']));
-        $emailkonsultan = strtolower(trim($_POST['emailkonsultan']));
-        $nowakonsultan = $formatInputClass->Notelpn(trim($_POST['nowakonsultan']));
-        $passkonsultan = trim($_POST['passkonsultan']);
-
+        $getMakeKonsultan = true;
         // DATA PEMBAYARAN
-        $isDiskon = "TIDAK";
-
-        $checkEmail = $userClass->selectUser("oneCondition","email",$emailkonsultan);
-        if($checkEmail['nums'] > 0){
-            $inputKonsultan = false;
-            $_SESSION['alertError'] = "Email sudah terdaftar.";
-        }else{
-            $checkNoTelpn = $userClass->selectUser("oneCondition","no_telpn",$nowakonsultan);
-            if($checkNoTelpn['nums'] > 0){
-                $inputKonsultan = false;
-                $_SESSION['alertError'] = "No Telpn sudah terdaftar.";
+        $isDiskon = "TIDAK ADA";
+        $pinFreeCheck = isset($_POST['pinFree']) ? true : false;
+        // MENGGUNAKAN POIN DAN LIMIT POIN BLM MENCAPAI BATAS
+        if($pinFreeCheck){
+            if(checkUsedPinFree() < 10){
+                $pinFree = trim($_POST['pinFreeInput']);
+                $checkPinFree = $pinClass->selectPin("pinFree",$pinFree,$dateNow,$_SESSION['id_nrjtour']);
+                // PIN TERSEDIA 
+                if($checkPinFree['nums'] > 0){
+                    $isDiskon = "GRATIS DP";
+                }else{
+                    $getMakeKonsultan = false;
+                    $inputKonsultan = false;
+                    $_SESSION['alertError'] = "Pin tidak berlaku.";
+                }
             }else{
-                $codeReferralKonsultan = generateRef();
-                $inputKonsultan = $userClass->insertUser($codeReferralKonsultan,$emailkonsultan,$namakonsultan,$nowakonsultan,password_hash($passkonsultan, PASSWORD_DEFAULT),$_SESSION['id_nrjtour'],$dateTimeNow);
             }
-
+        }
+        if($getMakeKonsultan){
+            // DATA CALON KONSULTAN
+            $namakonsultan = ucwords(trim($_POST['namakonsultan']));
+            $emailkonsultan = strtolower(trim($_POST['emailkonsultan']));
+            $nowakonsultan = $formatInputClass->Notelpn(trim($_POST['nowakonsultan']));
+            $passkonsultan = trim($_POST['passkonsultan']);
+    
+            $checkEmail = $userClass->selectUser("oneCondition","email",$emailkonsultan);
+            if($checkEmail['nums'] > 0){
+                $inputKonsultan = false;
+                $_SESSION['alertError'] = "Email sudah terdaftar.";
+            }else{
+                $checkNoTelpn = $userClass->selectUser("oneCondition","no_telpn",$nowakonsultan);
+                if($checkNoTelpn['nums'] > 0){
+                    $inputKonsultan = false;
+                    $_SESSION['alertError'] = "No Telpn sudah terdaftar.";
+                }else{
+                    $codeReferralKonsultan = generateRef();
+                    $inputKonsultan = $userClass->insertUser($codeReferralKonsultan,$emailkonsultan,$namakonsultan,$nowakonsultan,password_hash($passkonsultan, PASSWORD_DEFAULT),$_SESSION['id_nrjtour'],$dateTimeNow);
+                }
+    
+            }
         }
     }
 
@@ -105,7 +125,7 @@ if(isset($_POST['createOrder'])){
         $kategori = "UMROH";
 
         // JIKA TIDAK ADA DISKON UPLOAD BUKTI TRANSFER
-        if($isDiskon == "TIDAK"){
+        if($isDiskon == "TIDAK ADA"){
             // FOLDER
             $dir_bukti_tf = "assets/images/bukti_tf_umroh/";
             $fileNameTF = basename($_FILES["buktiTf"]["name"]);
@@ -150,12 +170,36 @@ if(isset($_POST['createOrder'])){
 
             $inputJamaah = $dataJamaahClass->insertDataJamaah($codeOrder,$ktpName,$nikktp,$namaKtp,$tempatlahir,$tgllahir,$detailalamat,$prov[1],$prov[0],$kobkota[1],$kobkota[0],$kec[1],$kec[0],$jk,$statusperkawinan);
             if($inputJamaah){
-                $_SESSION['alertSuccess'] = "Data tersimpan.";
-                header('Location: order-paket');
-                exit();
+                if($isDiskon = "GRATIS DP & PELUNASAN"){
+                    // PENGURANGAN SALDO POIN
+                    $totalPoin = $jumlahPoin - 10;
+                    $updateWallet = $walletClass->UpdateWallet("poin_balance",$totalPoin,$_SESSION['id_nrjtour']);
+                    if($updateWallet){
+                        $_SESSION['alertSuccess'] = "Data tersimpan.";
+                        header('Location: order-paket');
+                        exit();
+                    }
+                }else{
+                    $_SESSION['alertSuccess'] = "Data tersimpan.";
+                    header('Location: order-paket');
+                    exit();
+                }
             }
         }
     }
+}
+
+// CHECK PENGGUNAAN PIN
+function checkUsedPinFree(){
+    global $dataPenjualanClass;
+    $use = 0;
+    $data = $dataPenjualanClass->selectDataPenjualan("oneCondition", "perekrut", $_SESSION['id_nrjtour']);
+    foreach($data['data'] as $row){
+        if($row['is_diskon'] == "GRATIS DP"){
+            $use += 1; 
+        }
+    }
+    return $use;
 }
 
 function generateCodeOrder(){

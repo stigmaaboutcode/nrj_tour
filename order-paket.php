@@ -62,6 +62,12 @@
         }
     </script>
 
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+
 </head>
 
 <body data-sidebar="dark">
@@ -239,21 +245,31 @@
                                                 <h1 class="card-title">Pembayaran</h1>
                                                 <hr>
                                                 <div class="row">
-                                                    <div class="col-12 col-sm-6 mb-3">
+                                                    <div class="col-12 col-sm-12 mb-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="pinFree" name="pinFree">
+                                                            <label class="form-check-label" for="pinFree">PIN FREE</label>
+                                                        </div>
+                                                    </div>
+                                                    <div id="inputpin" class="col-12 col-sm-12 mb-3 hidden">
+                                                        <label for="pinFreeInput" class="form-label">Pin Gratis DP</label>
+                                                        <input class="form-control form-control-sm" type="text" id="pinFreeInput" name="pinFreeInput" placeholder="Masukkan pin free anda">
+                                                    </div>
+                                                    <div id="kategoriPembayaran" class="col-12 col-sm-6 mb-3">
                                                         <label for="category" class="form-label">Kategori</label>
                                                         <select required name="category" id="category" class="form-select form-select-sm">
                                                             <option value="">--PILIH KATEGORI PEMBAYARAN--</option>
                                                             <?= optPembayranDP() ?>
                                                         </select>
                                                     </div>
-                                                    <div class="col-12 col-sm-6 mb-3">
+                                                    <div id="kategoriRek" class="col-12 col-sm-6 mb-3">
                                                         <label for="rek" class="form-label">Rekening Tujuan</label>
                                                         <select required name="rek" id="rek" class="form-select form-select-sm">
                                                             <option value="">--PILIH REKENING TUJUAN--</option>
                                                             <?= optRekTujuan() ?>
                                                         </select>
                                                     </div>
-                                                    <div class="col-12 col-sm-12">
+                                                    <div id="kategoriBuktiTf" class="col-12 col-sm-12">
                                                         <label for="buktiTf" class="form-label">Bukti Transfer</label>
                                                         <input required type="file" name="buktiTf" id="buktiTf" class="form-control form-control-sm">
                                                     </div>
@@ -291,6 +307,38 @@
     <script src="assets/libs/node-waves/waves.min.js"></script>
 
     <script src="assets/js/app.js"></script>
+    <script>
+        var checkbox = document.getElementById('pinFree');
+        var inputpin = document.getElementById('inputpin');
+        var kategoriPembayaran = document.getElementById('kategoriPembayaran');
+        var kategoriRek = document.getElementById('kategoriRek');
+        var kategoriBuktiTf = document.getElementById('kategoriBuktiTf');
+
+        checkbox.addEventListener('click', function() {
+            if (checkbox.checked) {
+                var jumlahUse = parseInt('<?= checkUsedPinFree() ?>');
+                if(jumlahUse > 9){
+                    checkbox.checked = false;
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Limit Mencapai Batas.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }else{
+                    inputpin.classList.remove('hidden');
+                    kategoriPembayaran.classList.add('hidden');
+                    kategoriRek.classList.add('hidden');
+                    kategoriBuktiTf.classList.add('hidden');
+                }
+            } else {
+                inputpin.classList.add('hidden');
+                kategoriPembayaran.classList.remove('hidden');
+                kategoriRek.classList.remove('hidden');
+                kategoriBuktiTf.classList.remove('hidden');
+            }
+        });
+    </script>
     <!-- Sweet Alerts js -->
     <script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
     <?php if($_SESSION['alertSuccess'] != ""){ ?>

@@ -16,7 +16,7 @@ class dataPenjualanClass extends ConnectionsClass{
                 perekrut VARCHAR(7) NOT NULL,
                 direkrut VARCHAR(7) NOT NULL,
                 category ENUM('UMROH','HAJI') NOT NULL,
-                is_diskon ENUM('YA','TIDAK') NOT NULL,
+                is_diskon ENUM('GRATIS DP & PELUNASAN','GRATIS DP','TIDAK ADA') NOT NULL,
                 uang_muka DOUBLE NOT NULL,
                 bukti_tf_uang_muka TEXT NOT NULL,
                 paket_pelunasan ENUM('REGULER','EKSEKUTIF','RAMADHAN','SYAWAL') NULL,
