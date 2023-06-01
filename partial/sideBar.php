@@ -179,7 +179,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript: void(0);">
+                                <a href="menunggu-pelunasan">
                                     <?php if($orderNumMenungguPelunansanNotif > 0){ ?>
                                         <span class="badge rounded-pill bg-warning text-dark float-end"><?= $orderNumMenungguPelunansanNotif ?></span>
                                     <?php } ?>
