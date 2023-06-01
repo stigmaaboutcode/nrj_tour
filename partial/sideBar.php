@@ -1,10 +1,9 @@
 <?php  
-
+    $dataPenjualanClass = new dataPenjualanClass();
 ?>
 <div class="vertical-menu">
 
     <div data-simplebar class="h-100">
-
         <!--- Sidemenu -->
         <div id="sidebar-menu">
             <!-- Left Menu Start -->
@@ -17,17 +16,54 @@
                     </a>
                 </li>
 
-                <?php if($role_user == "ADMIN"){ ?>
+                <?php 
+                    if($role_user == "ADMIN"){
+                        // PRMINTAAN PEMBELIAN
+                        $dataNotif = $dataPenjualanClass->selectDataPenjualan("all");
+                        $orderNumPendingNotif = 0;
+                        $orderNumPendingPelunansanNotif = 0;
+                        foreach($dataNotif['data'] as $row){
+                            if($row['status'] == "PENDING"){
+                                $orderNumPendingNotif += 1;
+                            }elseif($row['status'] == "MENUNGGU KONFIRMASI PELUNASAN"){
+                                $orderNumPendingPelunansanNotif += 1;
+                            }
+                        }
+                ?>
                     <!-- ========== START TAMPILAN ADMIN ========== -->
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
-                            <i class="mdi mdi-email-alert-outline"></i><span class="badge rounded-pill bg-primary float-end">3</span>
+                            <i class="mdi mdi-email-alert-outline"></i>
+                            <?php if($orderNumPendingNotif + $orderNumPendingPelunansanNotif > 0){ ?>
+                                <span class="badge rounded-pill bg-warning text-dark float-end"><?= $orderNumPendingNotif + $orderNumPendingPelunansanNotif ?></span>
+                            <?php } ?>
                             <span>Permintaan</span>
                         </a> 
                         <ul class="sub-menu" aria-expanded="true">
-                            <li><a href="pending-dp"></i><span class="badge rounded-pill bg-primary float-end">3</span>Pembayaran DP</a></li>
-                            <li><a href="javascript: void(0);"></i><span class="badge rounded-pill bg-primary float-end">3</span>Pembayaran Pelunasan</a></li>
-                            <li><a href="javascript: void(0);"></i><span class="badge rounded-pill bg-primary float-end">3</span>Withdraw Komisi</a></li>
+                            <li>
+                                <a href="pending-dp">
+                                    <?php if($orderNumPendingNotif > 0){ ?>
+                                        <span class="badge rounded-pill bg-warning text-dark float-end"><?= $orderNumPendingNotif ?></span>
+                                    <?php } ?>
+                                    Pembayaran DP
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript: void(0);">
+                                    <?php if($orderNumPendingPelunansanNotif > 0){ ?>
+                                        <span class="badge rounded-pill bg-warning text-dark float-end"><?= $orderNumPendingPelunansanNotif ?></span>
+                                    <?php } ?>
+                                    Pembayaran Pelunasan
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript: void(0);">
+                                    <?php if($orderNumPendingNotif + $orderNumPendingPelunansanNotif > 0){ ?>
+                                        <span class="badge rounded-pill bg-warning text-dark float-end"><?= $orderNumPendingNotif + $orderNumPendingPelunansanNotif ?></span>
+                                    <?php } ?>
+                                    Withdraw Komisi
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li>
@@ -90,7 +126,28 @@
                         </ul>
                     </li>
                     <!-- END TAMPILAN ADMIN -->
-                <?php }else{ ?>
+                <?php 
+                    }else{
+                        $dataNotif = $dataPenjualanClass->selectDataPenjualan("oneCondition", "perekrut", $_SESSION['id_nrjtour']);
+                        $orderNumPendingNotif = 0;
+                        $orderNumTolakNotif = 0;
+                        $orderNumMenungguPelunansanNotif = 0;
+                        $orderNumPendingPelunansanNotif = 0;
+                        $orderNumTolakPelunansanNotif = 0;
+                        foreach($dataNotif['data'] as $row){
+                            if($row['status'] == "PENDING"){
+                                $orderNumPendingNotif += 1;
+                            }elseif($row['status'] == "DITOLAK"){
+                                $orderNumTolakNotif += 1;
+                            }elseif($row['status'] == "MENUNGGU PELUNASAN"){
+                                $orderNumMenungguPelunansanNotif += 1;
+                            }elseif($row['status'] == "MENUNGGU KONFIRMASI PELUNASAN"){
+                                $orderNumPendingPelunansanNotif += 1;
+                            }elseif($row['status'] == "PELUNASAN DITOLAK"){
+                                $orderNumTolakPelunansanNotif += 1;
+                            }
+                        }
+                ?>
                     <!-- ========== START TAMPILAN MEMBER ========== -->
                     <li>
                         <a href="order-paket" class="waves-effect">
@@ -101,25 +158,42 @@
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
                             <i class="ri-repeat-2-line"></i>
-                            <span class="badge rounded-pill bg-primary float-end">3</span>
+                            <?php if($orderNumTolakNotif + $orderNumTolakPelunansanNotif > 0){ ?>
+                                <span class="badge rounded-pill bg-danger float-end"><?= $orderNumTolakNotif + $orderNumTolakPelunansanNotif ?></span>
+                            <?php } ?>
+                            <?php if($orderNumPendingNotif + $orderNumMenungguPelunansanNotif + $orderNumPendingPelunansanNotif > 0){ ?>
+                                <span class="badge rounded-pill bg-warning text-dark float-end"><?= $orderNumPendingNotif + $orderNumMenungguPelunansanNotif + $orderNumPendingPelunansanNotif ?></span>
+                            <?php } ?>
                             <span>Proses Order</span>
                         </a> 
                         <ul class="sub-menu" aria-expanded="true">
                             <li>
                                 <a href="pending-dp">
-                                    <span class="badge rounded-pill bg-primary float-end">3</span>
+                                    <?php if($orderNumTolakNotif> 0){ ?>
+                                        <span class="badge rounded-pill bg-danger float-end"><?= $orderNumTolakNotif?></span>
+                                    <?php } ?>
+                                    <?php if($orderNumPendingNotif > 0){ ?>
+                                        <span class="badge rounded-pill bg-warning text-dark float-end"><?= $orderNumPendingNotif ?></span>
+                                    <?php } ?>
                                     Pending DP
                                 </a>
                             </li>
                             <li>
                                 <a href="javascript: void(0);">
-                                    <span class="badge rounded-pill bg-primary float-end">3</span>
+                                    <?php if($orderNumMenungguPelunansanNotif > 0){ ?>
+                                        <span class="badge rounded-pill bg-warning text-dark float-end"><?= $orderNumMenungguPelunansanNotif ?></span>
+                                    <?php } ?>
                                     Menunggu Pelunasan
                                 </a>
                             </li>
                             <li>
                                 <a href="javascript: void(0);">
-                                    <span class="badge rounded-pill bg-primary float-end">3</span>
+                                    <?php if($orderNumTolakPelunansanNotif > 0){ ?>
+                                        <span class="badge rounded-pill bg-danger float-end"><?= $orderNumTolakPelunansanNotif ?></span>
+                                    <?php } ?>
+                                    <?php if($orderNumPendingPelunansanNotif > 0){ ?>
+                                        <span class="badge rounded-pill bg-warning text-dark float-end"><?= $orderNumPendingPelunansanNotif ?></span>
+                                    <?php } ?>
                                     Pending Pelunasan
                                 </a>
                             </li>
