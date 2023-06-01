@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 31, 2023 at 12:21 PM
+-- Generation Time: Jun 01, 2023 at 10:14 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -44,6 +44,27 @@ INSERT INTO `data_bank_admin` (`id`, `nama_bank`, `atas_nama`, `no_rek`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `data_bank_user`
+--
+
+CREATE TABLE `data_bank_user` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `code_referral` varchar(7) NOT NULL,
+  `nama_bank` varchar(150) NOT NULL,
+  `atas_nama` varchar(250) NOT NULL,
+  `no_rek` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `data_bank_user`
+--
+
+INSERT INTO `data_bank_user` (`id`, `code_referral`, `nama_bank`, `atas_nama`, `no_rek`) VALUES
+(1, 'NRJGHTH', 'BCA', 'Asbudi Anugrah P', '786994854');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `data_jamaah`
 --
 
@@ -72,7 +93,8 @@ CREATE TABLE `data_jamaah` (
 --
 
 INSERT INTO `data_jamaah` (`id`, `code_order`, `foto_ktp`, `nik`, `nama`, `tempat_lahir`, `tgl_lahir`, `detail_alamat`, `prov`, `id_prov`, `kab_kota`, `id_kab_kota`, `kec`, `id_kec`, `jk`, `status_perkawinan`, `tgl_berangkat`) VALUES
-(1, 'NRJGHTH-310523001', 'assets/images/foto_ktp_jamaah/6476e5315b71c.png', '7371021303980001', 'Dody Setiawan', 'Ujung Padang', '1998-03-13', 'Jl. cendrawasih lr.4', 'Sulawesi Selatan', 28, 'Makassar', 254, 'Mamajang', 3590, 'Laki-laki', 'Belum Kawin', NULL);
+(1, 'NRJGHTH-310523001', 'assets/images/foto_ktp_jamaah/6476e5315b71c.png', '7371021303980001', 'Dody Setiawan', 'Ujung Padang', '1998-03-13', 'Jl. cendrawasih lr.4', 'Sulawesi Selatan', 28, 'Makassar', 254, 'Mamajang', 3590, 'Laki-laki', 'Belum Kawin', NULL),
+(2, 'NRJGHTH-010623001', 'assets/images/foto_ktp_jamaah/6477fe5b9615b.jpg', '737101030419990001', 'Ramdan Salim H', 'Makassar', '1999-04-03', 'jl cendrawasih lr 4 no 16', 'Sulawesi Selatan', 28, 'Makassar', 254, 'Mamajang', 3590, 'Laki-laki', 'Belum Kawin', NULL);
 
 -- --------------------------------------------------------
 
@@ -101,7 +123,8 @@ CREATE TABLE `data_penjualan` (
 --
 
 INSERT INTO `data_penjualan` (`id`, `code_order`, `perekrut`, `direkrut`, `category`, `is_diskon`, `uang_muka`, `bukti_tf_uang_muka`, `paket_pelunasan`, `uang_pelunasan`, `bukti_tf_pelunasan`, `status`, `date`) VALUES
-(1, 'NRJGHTH-310523001', 'NRJGHTH', 'NRJEUEN', 'UMROH', 'TIDAK ADA', 3500000, 'assets/images/bukti_tf_umroh/6476e53153b6c.png', NULL, 0, NULL, 'PENDING', '2023-05-31 14:12:01');
+(1, 'NRJGHTH-310523001', 'NRJGHTH', 'NRJEUEN', 'UMROH', 'TIDAK ADA', 3500000, 'assets/images/bukti_tf_umroh/6476e53153b6c.png', NULL, 0, NULL, 'MENUNGGU PELUNASAN', '2023-05-31 14:12:01'),
+(2, 'NRJGHTH-010623001', 'NRJGHTH', 'NRJQNXU', 'UMROH', 'GRATIS DP', 0, 'GRATIS', NULL, 0, NULL, 'MENUNGGU PELUNASAN', '2023-06-01 10:11:39');
 
 -- --------------------------------------------------------
 
@@ -162,7 +185,29 @@ CREATE TABLE `harga_pelunasan` (
 --
 
 INSERT INTO `harga_pelunasan` (`id`, `reguler`, `eksekutif`, `ramadhan`, `syawal`) VALUES
-(1, 0, 0, 0, 0);
+(1, 33000000, 45000000, 50000000, 32000000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `history_bonus_penjualan`
+--
+
+CREATE TABLE `history_bonus_penjualan` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `code_order` varchar(20) NOT NULL,
+  `code_referral` varchar(7) NOT NULL,
+  `category` enum('UMROH','HAJI') NOT NULL,
+  `nominal` double NOT NULL,
+  `date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `history_bonus_penjualan`
+--
+
+INSERT INTO `history_bonus_penjualan` (`id`, `code_order`, `code_referral`, `category`, `nominal`, `date`) VALUES
+(1, 'NRJGHTH-310523001', 'NRJGHTH', 'UMROH', 2000000, '2023-06-01 12:46:39');
 
 -- --------------------------------------------------------
 
@@ -184,7 +229,8 @@ CREATE TABLE `pin_user` (
 --
 
 INSERT INTO `pin_user` (`id`, `code_referral`, `pin_free`, `pin_uang_muka`, `pin_pelunasan`, `date_create`) VALUES
-(1, 'NRJGHTH', 'GMPM9P5C5581', 'FSLWFZ0134M7', '96WAD2A67H0Y', '2023-05-31');
+(1, 'NRJGHTH', 'GMPM9P5C5581', 'FSLWFZ0134M7', '96WAD2A67H0Y', '2023-05-31'),
+(2, 'NRJGHTH', 'EM1EAQEEN0RQ', 'O3XNQIJ3SQOI', 'VBYHOA52XG5V', '2023-06-01');
 
 -- --------------------------------------------------------
 
@@ -211,8 +257,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `code_referral`, `email`, `name`, `no_telpn`, `password`, `role_user`, `upline`, `status`, `join_date`) VALUES
 (1, 'ADMIN', 'admin@nrjtour.com', 'Admin', '87756789012', '$2y$10$t2I6GcF47eB2kDQqFzaSXud5TE2HJjN4wYMMDq8wwL5jJ5mwqwy.e', 'ADMIN', 'ADMIN', 'AKTIF', '2023-05-30 02:29:06'),
-(2, 'NRJGHTH', 'asbudi@gmail.com', 'Asbudi Anugrah', '897644556090', '$2y$10$t2I6GcF47eB2kDQqFzaSXud5TE2HJjN4wYMMDq8wwL5jJ5mwqwy.e', 'KONSULTAN', 'ADMIN', 'AKTIF', '2023-05-30 02:29:06'),
-(5, 'NRJEUEN', 'setaiwan@gmailc.o', 'Dody Setiawan', '87769952345', '$2y$10$if.8PM4HcW3UEBdcDUJBl.jv0DFw8g0cDKAKRnb4w.Ey1mbOG0DZ6', 'KONSULTAN', 'NRJGHTH', 'TIDAK AKTIF', '2023-05-31 14:12:01');
+(5, 'NRJEUEN', 'setaiwan@gmailc.o', 'Dody Setiawan', '87769952345', '$2y$10$if.8PM4HcW3UEBdcDUJBl.jv0DFw8g0cDKAKRnb4w.Ey1mbOG0DZ6', 'KONSULTAN', 'NRJGHTH', 'AKTIF', '2023-05-31 14:12:01'),
+(6, 'NRJQNXU', 'salimram@gmail.com', 'Ramdan Salim', '87756401234', '$2y$10$/ufx1I/2pdKhGGpIbbJVHOCG7yH4w7lSooegLZDBVfY6m7uHgfH8y', 'KONSULTAN', 'NRJGHTH', 'AKTIF', '2023-06-01 10:11:39');
 
 -- --------------------------------------------------------
 
@@ -232,7 +278,7 @@ CREATE TABLE `wallet_user` (
 --
 
 INSERT INTO `wallet_user` (`id`, `code_referral`, `bonus_balance`, `poin_balance`) VALUES
-(1, 'NRJGHTH', 0, -10);
+(1, 'NRJGHTH', 2000000, 10);
 
 --
 -- Indexes for dumped tables
@@ -243,6 +289,13 @@ INSERT INTO `wallet_user` (`id`, `code_referral`, `bonus_balance`, `poin_balance
 --
 ALTER TABLE `data_bank_admin`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `data_bank_user`
+--
+ALTER TABLE `data_bank_user`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `code_referral` (`code_referral`);
 
 --
 -- Indexes for table `data_jamaah`
@@ -277,6 +330,13 @@ ALTER TABLE `harga_pelunasan`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `history_bonus_penjualan`
+--
+ALTER TABLE `history_bonus_penjualan`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `code_order` (`code_order`);
+
+--
 -- Indexes for table `pin_user`
 --
 ALTER TABLE `pin_user`
@@ -309,16 +369,22 @@ ALTER TABLE `data_bank_admin`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `data_bank_user`
+--
+ALTER TABLE `data_bank_user`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `data_jamaah`
 --
 ALTER TABLE `data_jamaah`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `data_penjualan`
 --
 ALTER TABLE `data_penjualan`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `harga_bonus`
@@ -339,16 +405,22 @@ ALTER TABLE `harga_pelunasan`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `history_bonus_penjualan`
+--
+ALTER TABLE `history_bonus_penjualan`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `pin_user`
 --
 ALTER TABLE `pin_user`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `wallet_user`
