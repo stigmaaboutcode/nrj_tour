@@ -16,7 +16,13 @@ if(isset($_GET['user']) && isset($_GET['param'])){
     if($param == "suspen"){
         $updateUser = $userClass->UpdateUser("statusUser", $id, "TIDAK AKTIF");
     }else{
-        $updateUser = $userClass->UpdateUser("statusUser", $id, "AKTIF");
+        if(checkOrderMembrAktif($id)){
+            $updateUser = $userClass->UpdateUser("statusUser", $id, "AKTIF");
+        }else{
+            $_SESSION['alertError'] = "Pembelian Paket belum selesai.";
+            header('Location: data-member');
+            exit();
+        }
     }
     if($updateUser){
         $_SESSION['alertSuccess'] = "Data tersimpan.";
@@ -71,6 +77,23 @@ function colorStatus($txt){
     }else{
         return '<span class="badge rounded-pill alert-danger">' . $txt . '</span>';
     }
+}
+
+// CHECK FOR AKTIF KONSULTAN
+function checkOrderMembrAktif($id){
+    $dataPenjualanClass = new dataPenjualanClass;
+    $check = $dataPenjualanClass->selectDataPenjualan("oneCondition", "direkrut", $id);
+    $status = true;
+    if(dataUser($id)['upline'] != "ADMIN"){
+        if($check['nums'] == 1){
+            foreach($check['data'] as $row){
+                if($row['status'] == "PENDING" || $row['status'] == "DITOLAK"){
+                    $status = false;
+                }
+            }
+        }
+    }
+    return $status;
 }
 
 // DATA USER

@@ -18,11 +18,13 @@ if(isset($_POST['addPin'])){
     $totalCreatePin = 0;
     $getUser = $userClass->selectUser("oneCondition", "role_user", "KONSULTAN");
     foreach($getUser['data'] as $row){
-        // CHECK PIN IF EXIST
-        $pinCheck = $pinClass->selectPin("dataPinUser",$row['code_referral'],$dateNow);
-        if($pinCheck['nums'] == 0){
-            $insertPin = $pinClass->insertPin($row['code_referral'],pinFree(),pinDp(),pinPelunasan(),$dateNow);
-            $totalCreatePin += 1;
+        if($row['status'] == "AKTIF"){
+            // CHECK PIN IF EXIST
+            $pinCheck = $pinClass->selectPin("dataPinUser",$row['code_referral'],$dateNow);
+            if($pinCheck['nums'] == 0){
+                $insertPin = $pinClass->insertPin($row['code_referral'],pinFree(),pinDp(),pinPelunasan(),$dateNow);
+                $totalCreatePin += 1;
+            }
         }
     }
     if($totalCreatePin > 0){
@@ -43,16 +45,18 @@ function dataTable(){
     $data = $userClass->selectUser("oneCondition", "role_user", "KONSULTAN");
 
     foreach($data['data'] as $row){
-        echo '<tr>
-                <th> ' . $num++ . ' </th>
-                <td>
-                    <strong>' . $row['name'] . '</strong><br>
-                </td>
-                <td> ' . dataPinUser($row['code_referral'])['free'] . ' </td>
-                <td> ' . dataPinUser($row['code_referral'])['dp'] . ' </td>
-                <td> ' . dataPinUser($row['code_referral'])['pelunasan'] . ' </td>
-                <td> ' . dataPinUser($row['code_referral'])['tgl'] . ' </td>
-            </tr>';
+        if($row['status'] == "AKTIF"){
+            echo '<tr>
+                    <th> ' . $num++ . ' </th>
+                    <td>
+                        <strong>' . $row['name'] . '</strong><br>
+                    </td>
+                    <td> ' . dataPinUser($row['code_referral'])['free'] . ' </td>
+                    <td> ' . dataPinUser($row['code_referral'])['dp'] . ' </td>
+                    <td> ' . dataPinUser($row['code_referral'])['pelunasan'] . ' </td>
+                    <td> ' . dataPinUser($row['code_referral'])['tgl'] . ' </td>
+                </tr>';
+        }
     }
 }
 

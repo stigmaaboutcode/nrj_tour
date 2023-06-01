@@ -72,13 +72,18 @@ if(isset($_POST['createOrder'])){
     // TIDAK MENGGUNAKAN POIN
     if(!isset($_GET['usePoin'])){
         $getMakeKonsultan = true;
+        // DATA CALON KONSULTAN
+        $namakonsultan = ucwords(trim($_POST['namakonsultan']));
+        $emailkonsultan = strtolower(trim($_POST['emailkonsultan']));
+        $nowakonsultan = $formatInputClass->Notelpn(trim($_POST['nowakonsultan']));
+        $passkonsultan = trim($_POST['passkonsultan']);
         // DATA PEMBAYARAN
         $isDiskon = "TIDAK ADA";
         $pinFreeCheck = isset($_POST['pinFree']) ? true : false;
         // MENGGUNAKAN POIN DAN LIMIT POIN BLM MENCAPAI BATAS
         if($pinFreeCheck){
             if(checkUsedPinFree() < 10){
-                $pinFree = trim($_POST['pinFreeInput']);
+                $pinFree = strtoupper(trim($_POST['pinFreeInput']));
                 $checkPinFree = $pinClass->selectPin("pinFree",$pinFree,$dateNow,$_SESSION['id_nrjtour']);
                 // PIN TERSEDIA 
                 if($checkPinFree['nums'] > 0){
@@ -89,15 +94,12 @@ if(isset($_POST['createOrder'])){
                     $_SESSION['alertError'] = "Pin tidak berlaku.";
                 }
             }else{
+                $getMakeKonsultan = false;
+                $inputKonsultan = false;
+                $_SESSION['alertError'] = "Poin tidak cukup.";
             }
         }
         if($getMakeKonsultan){
-            // DATA CALON KONSULTAN
-            $namakonsultan = ucwords(trim($_POST['namakonsultan']));
-            $emailkonsultan = strtolower(trim($_POST['emailkonsultan']));
-            $nowakonsultan = $formatInputClass->Notelpn(trim($_POST['nowakonsultan']));
-            $passkonsultan = trim($_POST['passkonsultan']);
-    
             $checkEmail = $userClass->selectUser("oneCondition","email",$emailkonsultan);
             if($checkEmail['nums'] > 0){
                 $inputKonsultan = false;

@@ -7,6 +7,12 @@ if(!$_SESSION['loginNRJ']){
 $dataPenjualanClass = new dataPenjualanClass();
 $dataJamaahClass = new dataJamaahClass();
 $dataBankClass = new dataBankClass();
+$walletClass = new walletClass();
+$hargaBonusClass = new hargaBonusClass();
+$historyBonusPenjualanClass = new historyBonusPenjualanClass();
+$formatInputClass = new formatInputClass();
+$dateNow = $formatInputClass->date()['dateNow'];
+$dateTimeNow = $formatInputClass->date()['dateTimeNow'];
 
 // DELETE
 if(isset($_GET['idOrder']) && isset($_GET['param'])){
@@ -16,8 +22,10 @@ if(isset($_GET['idOrder']) && isset($_GET['param'])){
     if($check['nums'] > 0){
         foreach($check['data'] as $row){
             $statusForAksi = $row['status'];
+            $perekrut = $row['perekrut'];
             $fotoBuktiTf = $row['bukti_tf_uang_muka'];
             $konsultan = $row['direkrut'];
+            $is_diskon = $row['is_diskon'];
         }
         if($statusForAksi == "PENDING" || $statusForAksi == "DITOLAK"){
             $deleteKonsultan = true;
@@ -43,7 +51,11 @@ if(isset($_GET['idOrder']) && isset($_GET['param'])){
                     unlink($fotoKtp);
                     $deleteDataJamaah = $dataJamaahClass->deleteDataJamaah($idOrder);
                     if($deleteDataJamaah){
-                        
+                        // JIKA MENGGUNAKAN POIN MAKA KMBALIKAN POIN
+                        if($is_diskon == "GRATIS DP & PELUNASAN"){
+                            $totalPoin = walletUser($perekrut)['poin'] + 10;
+                            $updateWallet = $walletClass->UpdateWallet("poin_balance",$totalPoin,$perekrut);
+                        }
                         $_SESSION['alertSuccess'] = "Data terhapus.";
                         header('Location: pending-dp');
                         exit();
@@ -70,9 +82,31 @@ if(isset($_POST['terima'])){
     if($checkData['nums'] > 0){
         foreach($checkData['data'] as $row){
             $statusForAksi = $row['status'];
+            $perekrut = $row['perekrut'];
+            $direkrut = $row['direkrut'];
+            $category = $row['category'];
+            $is_diskon = $row['is_diskon'];
         }
         if($statusForAksi == "PENDING"){
-            
+            // CHANGE STATUS PEMBELIAN
+            $updateStatusPembelian = $dataPenjualanClass->UpdateDataPenjualan("changeStatus","code_order",$getId,"MENUNGGU PELUNASAN");
+            if($updateStatusPembelian){
+                // BAGIKAN BONUS PENJUALAN JIKA TIDAK ADA DISKON
+                if($is_diskon == "TIDAK ADA"){
+                    $bonusUser = $category == "UMROH" ? bonusUser("PENJUALAN")['umroh'] : bonusUser("PENJUALAN")['haji'];
+                    $totalBonusUser = walletUser($perekrut)['bonus'] + $bonusUser;
+                    $updateWallet = $walletClass->UpdateWallet("bonus_balance",$totalBonusUser,$perekrut);
+                    if($updateWallet){
+                        $historyBonusPenjualanClass->insertHistoryBonusPenjualan($getId,$perekrut,$category,$bonusUser,$dateTimeNow);
+                    }
+                }
+                if($perekrut != $direkrut){
+                    $userClass->UpdateUser("statusUser",$direkrut,"AKTIF");
+                }
+                $_SESSION['alertSuccess'] = "Data berhasil diubah.";
+                header('Location: pending-dp');
+                exit();
+            }
         }else{
             $_SESSION['alertError'] = "Data tidak ditemukan.";
             header('Location: pending-dp');
@@ -157,6 +191,16 @@ if(isset($_POST['resend'])){
     }
 }
 
+// DATA BONUS
+function bonusUser($cat){
+    global $hargaBonusClass;
+    $data = $hargaBonusClass->selectHargaBonus($cat);
+    foreach($data['data'] as $row){
+        $result['umroh'] = $row['umroh'];
+        $result['haji'] = $row['haji'];
+    }
+    return $result;
+}
 
 // DATA TABLE
 function dataTable(){
@@ -175,6 +219,7 @@ function dataTable(){
             $show = $row['status'] == "PENDING" ? true : false;
         }
         if($show){
+
             $fee = $row['uang_muka'] > 0 ? "Rp." . number_format($row['uang_muka'],0,",",".") : "Gratis";
             echo '<tr>
                     <th> ' . $num++ . ' </th>
@@ -223,6 +268,18 @@ function dataJamaah($codeOrder){
         $result['status_perkawinan'] = $row['status_perkawinan'];
         $result['tgl_berangkat'] = $row['tgl_berangkat'];
     }
+    return $result;
+}
+// WALLET USER
+function walletUser($perekrut){
+    global $walletClass;
+
+    $data = $walletClass->selectWallet($perekrut);
+    foreach($data['data'] as $row){
+        $result['poin'] = $row['poin_balance'];
+        $result['bonus'] = $row['bonus_balance'];
+    }
+
     return $result;
 }
 
@@ -280,6 +337,7 @@ function dataUser($idUser){
         $result['name'] = $row['name'];
         $result['email'] = $row['email'];
         $result['no_telpn'] = $row['no_telpn'];
+        $result['status'] = $row['status'];
     }
     $result['nums'] = $data['nums'];
     return $result;
