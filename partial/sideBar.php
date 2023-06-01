@@ -199,6 +199,12 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="tukar-bonus-dan-poin" class="waves-effect">
+                            <i class="ri-arrow-left-right-line"></i>
+                            <span>Tukar Bonus & Poin</span>
+                        </a>
+                    </li>
                     <li class="menu-title">Data & Laporan</li>
                     <li>
                         <a href="data-member" class="waves-effect">

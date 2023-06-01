@@ -14,4 +14,17 @@ if($role_user != "ADMIN"){
         $createWallet = $walletClass->insertWallet($_SESSION['id_nrjtour']);
     }
 }
+
+// WALLET USER
+function walletUser(){
+    global $walletClass;
+
+    $data = $walletClass->selectWallet($_SESSION['id_nrjtour']);
+    foreach($data['data'] as $row){
+        $result['poin'] = $row['poin_balance'];
+        $result['bonus'] = $row['bonus_balance'];
+    }
+
+    return $result;
+}
 ?>

@@ -28,6 +28,7 @@ if(isset($_GET['usePoin'])){
         $jumlahPoin = walletUser()['poin'];
         // UNTUK POIN PRIBADI HARUS LEBIH DARI ATAU SAMA DENGAN 10 UNTUK DAPAT DIGUNAKAN 
         if($jumlahPoin < 10){
+            $_SESSION['alertError'] = "Poin tidak cukup!";
             header('Location: dasbor');
             exit();
         }
@@ -50,13 +51,9 @@ if(isset($_POST['submitPin'])){
         if($checkPinDp['nums'] > 0){
             $_SESSION['alertSuccess'] = "Success.";
             $_SESSION['inputOrderNrj'] = true;
-            header('Location: order-paket');
-            exit();
         }else{
             $_SESSION['alertError'] = "Pin tidak berlaku.";
             $_SESSION['inputOrderNrj'] = false;
-            header('Location: order-paket');
-            exit();
         }
     }
 }
@@ -172,7 +169,7 @@ if(isset($_POST['createOrder'])){
 
             $inputJamaah = $dataJamaahClass->insertDataJamaah($codeOrder,$ktpName,$nikktp,$namaKtp,$tempatlahir,$tgllahir,$detailalamat,$prov[1],$prov[0],$kobkota[1],$kobkota[0],$kec[1],$kec[0],$jk,$statusperkawinan);
             if($inputJamaah){
-                if($isDiskon = "GRATIS DP & PELUNASAN"){
+                if($isDiskon == "GRATIS DP & PELUNASAN"){
                     // PENGURANGAN SALDO POIN
                     $totalPoin = $jumlahPoin - 10;
                     $updateWallet = $walletClass->UpdateWallet("poin_balance",$totalPoin,$_SESSION['id_nrjtour']);

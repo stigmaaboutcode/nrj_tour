@@ -2,7 +2,7 @@
     include "apiDB.php"; // DB
     include "func/formatInput.php"; // FUNCTION
     include "config/userLogin.php"; // USER LOGIN
-    include "config/dasborConfig.php"; // STATUS ORDER
+    include "config/tukarBonusDanPoinConfig.php"; // STATUS ORDER
 ?>
 
 <!doctype html>
@@ -11,7 +11,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>DASBOR | NRJ TOUR</title>
+    <title>TUKAR BONUS & POIN | NRJ TOUR</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesdesign" name="author" />
@@ -61,12 +61,12 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 class="mb-sm-0">Dasbor</h4>
+                                <h4 class="mb-sm-0">Tukar Bonus & Poin</h4>
 
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">NRJ Tour</a></li>
-                                        <li class="breadcrumb-item active">Dasbor</li>
+                                        <li class="breadcrumb-item active">Tukar Bonus & Poin</li>
                                     </ol>
                                 </div>
 
@@ -75,63 +75,23 @@
                     </div>
                     <!-- end page title -->
 
-                    <?php if($role_user == "ADMIN"){ ?>
-                        <!-- ========== START TAMPILAN ADMIN ========== -->
-
-                        <!-- END TAMPILAN ADMIN -->
-                    <?php }else{ ?>
-                        <!-- ========== START TAMPILAN MEMBER ========== -->
-                        <div class="row">
-                            <div class="col-xl-6 col-sm-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex text-muted">
-                                            <div class="flex-shrink-0  me-3 align-self-center">
-                                                <div class="avatar-sm">
-                                                    <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
-                                                        <i class="ri-coin-line"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1 overflow-hidden">
-                                                <p class="mb-1">Saldo Bonus</p>
-                                                <h5 class="mb-3">Rp.<?= number_format(walletUser()['bonus'],0,",",".") ?></h5>
-                                                <p class="text-truncate mb-0" style="font-size: smaller;"><a href="">Withdraw!</a> Bonus Anda.</p>
-                                            </div>
-                                        </div>
+                    <div class="row">
+                        <div class="col-sm-4 mx-auto">
+                            <form action="" method="post" class="card">
+                                <div class="card-body">
+                                    <h1 class="card-title">Masukkan Jumlah Poin</h1>
+                                    <hr>
+                                    <div class="mb-2">
+                                        <input type="number" name="poin" value="<?= $jumlahPoin ?>" id="poin" class="form-control" placeholder="Masukkan jumlah poin">
                                     </div>
-                                    <!-- end card-body -->
                                 </div>
-                                <!-- end card -->
-                            </div>
-                            <div class="col-xl-6 col-sm-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex text-muted">
-                                            <div class="flex-shrink-0  me-3 align-self-center">
-                                                <div class="avatar-sm">
-                                                    <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
-                                                        <i class="ri-trophy-line"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1 overflow-hidden">
-                                                <p class="mb-1">Saldo Poin</p>
-                                                <h5 class="mb-3"><?= walletUser()['poin'] ?> Poin</h5>
-                                                <p class="text-truncate mb-0" style="font-size: smaller;">Gratis 1 paket umroh untuk 10 poin. <a href="order-paket?usePoin=ya">Claim!</a></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end card-body -->
+                                <div class="card-footer text-end">
+                                    <button type="submit" name="beli" class="btn btn-success btn-sm">Beli</button>
+                                    <button type="submit" name="jual" class="btn btn-danger btn-sm">Jual</button>
                                 </div>
-                                <!-- end card -->
-                            </div>
+                            </form>
                         </div>
-
-                        <!-- END TAMPILAN MEMBER -->
-                    <?php } ?>
-
-                    <div class="row"></div>
+                    </div>
 
                 </div> <!-- container-fluid -->
             </div>
