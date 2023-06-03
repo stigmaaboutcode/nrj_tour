@@ -81,6 +81,7 @@
                                 <div class="card-body">
                                     <h1 class="card-title">Masukkan Jumlah Poin</h1>
                                     <hr>
+                                    <p><strong>1 Poin = Rp.2.000.000</strong></p>
                                     <div class="mb-2">
                                         <input type="number" name="poin" value="<?= $jumlahPoin ?>" id="poin" class="form-control" placeholder="Masukkan jumlah poin">
                                     </div>

@@ -96,9 +96,6 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <div class="card-header">
-                                    <h5 class="card-title">Data Table</h5>
-                                </div>
                                 <div class="card-body">
                                     <div id="downloadPdfBtn"></div>
                                     <table id="datatable" class="table table-striped dt-responsive table-bordered nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">

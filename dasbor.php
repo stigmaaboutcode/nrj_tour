@@ -96,7 +96,7 @@
                                             <div class="flex-grow-1 overflow-hidden">
                                                 <p class="mb-1">Saldo Bonus</p>
                                                 <h5 class="mb-3">Rp.<?= number_format(walletUser()['bonus'],0,",",".") ?></h5>
-                                                <p class="text-truncate mb-0" style="font-size: smaller;"><a href="">Withdraw!</a> Bonus Anda.</p>
+                                                <p class="text-truncate mb-0" style="font-size: smaller;"><a href="#withdraw" data-bs-toggle="modal">Withdraw!</a> Bonus Anda.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -127,7 +127,29 @@
                                 <!-- end card -->
                             </div>
                         </div>
-
+                        <div class="modal fade" id="withdraw" tabindex="-1"
+                        aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <form action="" method="post" class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Withdraw Bonus</h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-2">
+                                            <strong>Saldo Anda: Rp.<?= number_format(walletUser()['bonus'],0,",",".") ?></strong>
+                                        </div>
+                                        <div id="inputpin" class="col-12 col-sm-12 mb-3">
+                                            <label for="nominal" class="form-label">Jumlah (Rp.)</label>
+                                            <input required class="form-control form-control-sm" type="number" id="nominal" name="nominal" placeholder="Masukkan jumlah">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" name="withdrawBonus" class="btn btn-success">Withdraw</button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         <!-- END TAMPILAN MEMBER -->
                     <?php } ?>
 

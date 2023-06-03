@@ -1,5 +1,6 @@
 <?php  
     $dataPenjualanClass = new dataPenjualanClass();
+    $withdrawClass = new withdrawClass();
 ?>
 <div class="vertical-menu">
 
@@ -29,13 +30,15 @@
                                 $orderNumPendingPelunansanNotif += 1;
                             }
                         }
+                        $dataWd = $withdrawClass->selectWithdraw("oneCondition", "status", "PENDING");
+                        $wdnUMPending = $dataWd['nums'];
                 ?>
                     <!-- ========== START TAMPILAN ADMIN ========== -->
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
                             <i class="mdi mdi-email-alert-outline"></i>
-                            <?php if($orderNumPendingNotif + $orderNumPendingPelunansanNotif > 0){ ?>
-                                <span class="badge rounded-pill bg-warning text-dark float-end"><?= $orderNumPendingNotif + $orderNumPendingPelunansanNotif ?></span>
+                            <?php if($orderNumPendingNotif + $orderNumPendingPelunansanNotif + $wdnUMPending > 0){ ?>
+                                <span class="badge rounded-pill bg-warning text-dark float-end"><?= $orderNumPendingNotif + $orderNumPendingPelunansanNotif + $wdnUMPending ?></span>
                             <?php } ?>
                             <span>Permintaan</span>
                         </a> 
@@ -57,9 +60,9 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript: void(0);">
-                                    <?php if($orderNumPendingNotif + $orderNumPendingPelunansanNotif > 0){ ?>
-                                        <span class="badge rounded-pill bg-warning text-dark float-end"><?= $orderNumPendingNotif + $orderNumPendingPelunansanNotif ?></span>
+                                <a href="withdraw-pending">
+                                    <?php if($wdnUMPending > 0){ ?>
+                                        <span class="badge rounded-pill bg-warning text-dark float-end"><?= $wdnUMPending ?></span>
                                     <?php } ?>
                                     Withdraw Komisi
                                 </a>
@@ -101,7 +104,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="javascript: void(0);" class="waves-effect">
+                        <a href="withdraw" class="waves-effect">
                             <i class="mdi mdi-form-dropdown"></i>
                             <span>Withdraw</span>
                         </a>
@@ -229,7 +232,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="javascript: void(0);" class="waves-effect">
+                        <a href="withdraw" class="waves-effect">
                             <i class="mdi mdi-form-dropdown"></i>
                             <span>Withdraw</span>
                         </a>
