@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 01, 2023 at 10:14 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 7.4.33
+-- Generation Time: Jun 03, 2023 at 08:31 AM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 7.4.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,7 +32,7 @@ CREATE TABLE `data_bank_admin` (
   `nama_bank` varchar(150) NOT NULL,
   `atas_nama` varchar(250) NOT NULL,
   `no_rek` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `data_bank_admin`
@@ -53,14 +53,14 @@ CREATE TABLE `data_bank_user` (
   `nama_bank` varchar(150) NOT NULL,
   `atas_nama` varchar(250) NOT NULL,
   `no_rek` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `data_bank_user`
 --
 
 INSERT INTO `data_bank_user` (`id`, `code_referral`, `nama_bank`, `atas_nama`, `no_rek`) VALUES
-(1, 'NRJGHTH', 'BCA', 'Asbudi Anugrah P', '786994854');
+(2, 'NRJGHTH', 'BCA', 'Asbudi Anugrah Patimasang', '7766855996');
 
 -- --------------------------------------------------------
 
@@ -86,7 +86,7 @@ CREATE TABLE `data_jamaah` (
   `jk` enum('Laki-laki','Perempuan') NOT NULL,
   `status_perkawinan` enum('Belum Kawin','Sudah Kawin','Cerai Hidup','Cerai Mati') NOT NULL,
   `tgl_berangkat` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `data_jamaah`
@@ -116,7 +116,7 @@ CREATE TABLE `data_penjualan` (
   `bukti_tf_pelunasan` text DEFAULT NULL,
   `status` enum('PENDING','DITOLAK','MENUNGGU PELUNASAN','MENUNGGU KONFIRMASI PELUNASAN','PELUNASAN DITOLAK','LUNAS') NOT NULL DEFAULT 'PENDING',
   `date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `data_penjualan`
@@ -137,7 +137,7 @@ CREATE TABLE `harga_bonus` (
   `category` enum('PENJUALAN','UPLINE') NOT NULL,
   `umroh` double NOT NULL DEFAULT 0,
   `haji` double NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `harga_bonus`
@@ -157,7 +157,7 @@ CREATE TABLE `harga_dp` (
   `id` int(11) UNSIGNED NOT NULL,
   `umroh` double NOT NULL DEFAULT 0,
   `haji` double NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `harga_dp`
@@ -178,7 +178,7 @@ CREATE TABLE `harga_pelunasan` (
   `eksekutif` double NOT NULL DEFAULT 0,
   `ramadhan` double NOT NULL DEFAULT 0,
   `syawal` double NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `harga_pelunasan`
@@ -200,7 +200,7 @@ CREATE TABLE `history_bonus_penjualan` (
   `category` enum('UMROH','HAJI') NOT NULL,
   `nominal` double NOT NULL,
   `date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `history_bonus_penjualan`
@@ -222,7 +222,7 @@ CREATE TABLE `pin_user` (
   `pin_uang_muka` varchar(12) NOT NULL,
   `pin_pelunasan` varchar(12) NOT NULL,
   `date_create` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `pin_user`
@@ -249,7 +249,7 @@ CREATE TABLE `user` (
   `upline` varchar(7) NOT NULL DEFAULT 'ADMIN',
   `status` enum('AKTIF','TIDAK AKTIF') NOT NULL DEFAULT 'TIDAK AKTIF',
   `join_date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user`
@@ -258,7 +258,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `code_referral`, `email`, `name`, `no_telpn`, `password`, `role_user`, `upline`, `status`, `join_date`) VALUES
 (1, 'ADMIN', 'admin@nrjtour.com', 'Admin', '87756789012', '$2y$10$t2I6GcF47eB2kDQqFzaSXud5TE2HJjN4wYMMDq8wwL5jJ5mwqwy.e', 'ADMIN', 'ADMIN', 'AKTIF', '2023-05-30 02:29:06'),
 (5, 'NRJEUEN', 'setaiwan@gmailc.o', 'Dody Setiawan', '87769952345', '$2y$10$if.8PM4HcW3UEBdcDUJBl.jv0DFw8g0cDKAKRnb4w.Ey1mbOG0DZ6', 'KONSULTAN', 'NRJGHTH', 'AKTIF', '2023-05-31 14:12:01'),
-(6, 'NRJQNXU', 'salimram@gmail.com', 'Ramdan Salim', '87756401234', '$2y$10$/ufx1I/2pdKhGGpIbbJVHOCG7yH4w7lSooegLZDBVfY6m7uHgfH8y', 'KONSULTAN', 'NRJGHTH', 'AKTIF', '2023-06-01 10:11:39');
+(6, 'NRJQNXU', 'salimram@gmail.com', 'Ramdan Salim', '87756401234', '$2y$10$/ufx1I/2pdKhGGpIbbJVHOCG7yH4w7lSooegLZDBVfY6m7uHgfH8y', 'KONSULTAN', 'NRJGHTH', 'AKTIF', '2023-06-01 10:11:39'),
+(7, 'NRJGHTH', 'asbudi@gmail.com', 'Asbudi Anugrah P', '87760452233', '$2y$10$RGK0ZZXqTmZj8ll0Dx.m5.jvvwXFturXJEFYvtEZEgM/AenO8pI9i', 'KONSULTAN', 'ADMIN', 'AKTIF', '2023-06-03 04:17:49');
 
 -- --------------------------------------------------------
 
@@ -271,14 +272,36 @@ CREATE TABLE `wallet_user` (
   `code_referral` varchar(7) NOT NULL,
   `bonus_balance` double DEFAULT 0,
   `poin_balance` int(11) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `wallet_user`
 --
 
 INSERT INTO `wallet_user` (`id`, `code_referral`, `bonus_balance`, `poin_balance`) VALUES
-(1, 'NRJGHTH', 2000000, 10);
+(1, 'NRJGHTH', 1500000, 10);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `withdraw`
+--
+
+CREATE TABLE `withdraw` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `code_referral` varchar(7) NOT NULL,
+  `nominal` double NOT NULL,
+  `status` enum('PENDING','DITOLAK','SUCCESS') NOT NULL DEFAULT 'PENDING',
+  `date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `withdraw`
+--
+
+INSERT INTO `withdraw` (`id`, `code_referral`, `nominal`, `status`, `date`) VALUES
+(1, 'NRJGHTH', 1000000, 'DITOLAK', '2023-06-03 12:07:17'),
+(2, 'NRJGHTH', 500000, 'SUCCESS', '2023-06-03 13:38:50');
 
 --
 -- Indexes for dumped tables
@@ -359,6 +382,12 @@ ALTER TABLE `wallet_user`
   ADD UNIQUE KEY `code_referral` (`code_referral`);
 
 --
+-- Indexes for table `withdraw`
+--
+ALTER TABLE `withdraw`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -372,7 +401,7 @@ ALTER TABLE `data_bank_admin`
 -- AUTO_INCREMENT for table `data_bank_user`
 --
 ALTER TABLE `data_bank_user`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `data_jamaah`
@@ -420,13 +449,19 @@ ALTER TABLE `pin_user`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `wallet_user`
 --
 ALTER TABLE `wallet_user`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `withdraw`
+--
+ALTER TABLE `withdraw`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
