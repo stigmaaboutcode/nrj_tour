@@ -35,7 +35,7 @@ function dataTable(){
                     <td>' . colorStatus($row['status']) . '</td>
                     <td>' . $row['date'] . '</td>
                     <td>
-                        <a href="#pelunansan' . $row['code_order'] . '" data-bs-toggle="modal" class="btn btn-sm btn-warning text-dark"><i class="mx-auto ri-edit-line"></i></a>
+                        <a href="pelunasan-paket?idOrder=' . $row['code_order'] . '" class="btn btn-sm btn-warning text-dark"><i class="mx-auto ri-edit-line"></i></a>
                     </td>
                 </tr>';
         }

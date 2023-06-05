@@ -13,7 +13,7 @@ class dataKelengkapanJamaahClass extends ConnectionsClass{
             $sql = "CREATE TABLE " . $this->table_name . " (
                 id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 code_order VARCHAR(20) NOT NULL UNIQUE,
-                no_passport INT(59) NOT NULL,
+                no_passport VARCHAR(59) NOT NULL,
                 tgl_terbit DATE NOT NULL,
                 tgl_berlaku DATE NOT NULL,
                 alamat_terbit TEXT NOT NULL,

@@ -101,23 +101,17 @@ class dataJamaahClass extends ConnectionsClass{
     }
 
     // UPDATE TABLE
-    // public function UpdateDataJamaah(?string $param = null, ?string $key1 = null, ?string $key2 = null, ?string $value1 = null, ?string $value2 = null){
-    //     // SET QUERY
-    //     if($param == "changeStatus"){
-    //         $sql = "UPDATE " . $this->table_name . " SET status  = '" . $value1 . "' WHERE " . $key1 . " = '" . $key2 . "'";
-    //     }elseif($param == "confirmDp"){
-    //         $sql = "UPDATE " . $this->table_name . " SET uang_pelunasan = '" . $value1 . "', status = 'MENUNGGU PELUNASAN' WHERE " . $key1 . " = '" . $key2 . "'";
-    //     }elseif($param == "pelunasan"){
-    //         $sql = "UPDATE " . $this->table_name . " SET bukti_tf_pelunasan = '" . $value1 . "', status = 'MENUNGGU KONFIRMASI PELUNASAN' WHERE " . $key1 . " = '" . $key2 . "'";
-    //     }elseif($param == "batalpelunasan"){
-    //         $sql = "UPDATE " . $this->table_name . " SET bukti_tf_pelunasan = '', status = '" . $value1 . "' WHERE " . $key1 . " = '" . $key2 . "'";
-    //     }
-    //     // EXECUTE THE QUERY TO CREATE TABLE
-    //     $exe = $this->dbConn()->query($sql);
-    //     // CLOSE THE CONNECTION
-    //     $this->dbConn()->close();
-    //     return $exe;
-    // }
+    public function UpdateDataJamaah(?string $param = null, ?string $key1 = null, ?string $key2 = null, ?string $value1 = null, ?string $value2 = null){
+        // SET QUERY
+        if($param == "tglKeberangkatan"){
+            $sql = "UPDATE " . $this->table_name . " SET tgl_berangkat  = '" . $value1 . "' WHERE " . $key1 . " = '" . $key2 . "'";
+        }
+        // EXECUTE THE QUERY TO CREATE TABLE
+        $exe = $this->dbConn()->query($sql);
+        // CLOSE THE CONNECTION
+        $this->dbConn()->close();
+        return $exe;
+    }
 
     // DELETE TABLE
     public function deleteDataJamaah(?string $key = null){

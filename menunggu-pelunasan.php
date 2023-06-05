@@ -103,7 +103,7 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>No. Order</th>
-                                                <th>Harga</th>
+                                                <th>Harga DP</th>
                                                 <th>Diskon</th>
                                                 <th>Data Jamaah</th>
                                                 <th>Status</th>
@@ -170,27 +170,6 @@
                                         data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="modal fade" id="pelunansan<?= $row['code_order'] ?>" tabindex="-1"
-                        aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                            <form action="" method="post" class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Pelunasan</h1>
-                                </div>
-                                <div class="modal-body">
-                                    <div id="inputpin" class="col-12 col-sm-12 mb-3">
-                                        <label for="pinPelunasan" class="form-label">Pin Pelunasan</label>
-                                        <input required class="form-control form-control-sm" type="text" id="pinPelunasan" style="text-transform: uppercase;" name="pinPelunasan" placeholder="Masukkan pin pelunasan anda">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <input type="hidden" name="idOrder" value="<?= $row['code_order'] ?>">
-                                    <button type="submit" name="checkPin" class="btn btn-success">Submit</button>
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </form>
                         </div>
                     </div>
                     <?php  

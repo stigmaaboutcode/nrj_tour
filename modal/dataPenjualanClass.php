@@ -19,7 +19,7 @@ class dataPenjualanClass extends ConnectionsClass{
                 is_diskon ENUM('GRATIS DP & PELUNASAN','GRATIS DP','TIDAK ADA') NOT NULL,
                 uang_muka DOUBLE NOT NULL,
                 bukti_tf_uang_muka TEXT NOT NULL,
-                paket_pelunasan ENUM('REGULER','EKSEKUTIF','RAMADHAN','SYAWAL') NULL,
+                paket_pelunasan ENUM('REGULER','EKSEKUTIF','RAMADHAN','SYAWAL','GRATIS') NULL,
                 uang_pelunasan DOUBLE NULL DEFAULT '0',
                 bukti_tf_pelunasan TEXT NULL,
                 status ENUM('PENDING','DITOLAK','MENUNGGU PELUNASAN','MENUNGGU KONFIRMASI PELUNASAN','PELUNASAN DITOLAK','LUNAS') NOT NULL DEFAULT 'PENDING',
@@ -87,18 +87,14 @@ class dataPenjualanClass extends ConnectionsClass{
     }
 
     // UPDATE TABLE
-    public function UpdateDataPenjualan(?string $param = null, ?string $key1 = null, ?string $key2 = null, ?string $value1 = null, ?string $value2 = null){
+    public function UpdateDataPenjualan(?string $param = null, ?string $key1 = null, ?string $key2 = null, ?string $value1 = null, ?string $value2 = null, ?string $value3 = null){
         // SET QUERY
         if($param == "changeStatus"){
             $sql = "UPDATE " . $this->table_name . " SET status  = '" . $value1 . "' WHERE " . $key1 . " = '" . $key2 . "'";
         }elseif($param == "resendDp"){
             $sql = "UPDATE " . $this->table_name . " SET bukti_tf_uang_muka = '" . $value1 . "', status = 'PENDING' WHERE " . $key1 . " = '" . $key2 . "'";
-        }elseif($param == "confirmDp"){
-            $sql = "UPDATE " . $this->table_name . " SET uang_pelunasan = '" . $value1 . "', status = 'MENUNGGU PELUNASAN' WHERE " . $key1 . " = '" . $key2 . "'";
         }elseif($param == "pelunasan"){
-            $sql = "UPDATE " . $this->table_name . " SET bukti_tf_pelunasan = '" . $value1 . "', status = 'MENUNGGU KONFIRMASI PELUNASAN' WHERE " . $key1 . " = '" . $key2 . "'";
-        }elseif($param == "batalpelunasan"){
-            $sql = "UPDATE " . $this->table_name . " SET bukti_tf_pelunasan = '', status = '" . $value1 . "' WHERE " . $key1 . " = '" . $key2 . "'";
+            $sql = "UPDATE " . $this->table_name . " SET paket_pelunasan = '" . $value1 . "', uang_pelunasan = '" . $value2 . "', bukti_tf_pelunasan = '" . $value3 . "', status = 'MENUNGGU KONFIRMASI PELUNASAN' WHERE " . $key1 . " = '" . $key2 . "'";
         }
         // EXECUTE THE QUERY TO CREATE TABLE
         $exe = $this->dbConn()->query($sql);
