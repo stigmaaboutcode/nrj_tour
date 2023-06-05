@@ -94,7 +94,7 @@
                             <span>Bonus Penjualan</span>
                         </a> 
                         <ul class="sub-menu" aria-expanded="true">
-                            <li><a href="javascript: void(0);">Perekrut</a></li>
+                            <li><a href="bonus-penjualan">Perekrut</a></li>
                             <li><a href="javascript: void(0);" class="has-arrow">Matching</a>
                                 <ul class="sub-menu" aria-expanded="true">
                                     <li><a href="javascript: void(0);">Rekap</a></li>
@@ -125,7 +125,7 @@
                             <li><a href="setting-harga-dp">Harga DP</a></li>
                             <li><a href="setting-harga-pelunasan">Harga Paket Pelunasan</a></li>
                             <li><a href="setting-bonus-penjualan">Bonus Penjualan</a></li>
-                            <li><a href="setting-bonus-upline">Bonus Upline</a></li>
+                            <li><a href="setting-bonus-upline">Bonus Matching</a></li>
                         </ul>
                     </li>
                     <!-- END TAMPILAN ADMIN -->
@@ -227,7 +227,7 @@
                             <span>My Bonus</span>
                         </a> 
                         <ul class="sub-menu" aria-expanded="true">
-                            <li><a href="javascript: void(0);">Penjualan Paket</a></li>
+                            <li><a href="bonus-penjualan">Penjualan Paket</a></li>
                             <li><a href="javascript: void(0);">Matching</a></li>         
                         </ul>
                     </li>
