@@ -159,6 +159,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="pelunasan-paket" class="waves-effect">
+                            <i class="ri-edit-line"></i>
+                            <span>Pelunasan Paket</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
                             <i class="ri-repeat-2-line"></i>
                             <?php if($orderNumTolakNotif + $orderNumTolakPelunansanNotif > 0){ ?>
