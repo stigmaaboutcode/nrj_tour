@@ -29,11 +29,17 @@ if(isset($_GET['idOrder']) && isset($_GET['param'])){
         }
         if($statusForAksi == "PENDING" || $statusForAksi == "DITOLAK"){
             $deleteKonsultan = true;
-            // CHECK DATA KONSULTAN
-            $checkKonsultan = $userClass->selectUser("oneCondition","code_referral",$konsultan);
-            // DELETE AKUN KONSULTAN JIKA ADA
-            if($checkKonsultan['nums'] > 0){
-                $deleteKonsultan = $userClass->deleteUser($konsultan);
+            // JIKA MENGGUNAKAN POIN MAKA KMBALIKAN POIN
+            if($is_diskon == "GRATIS DP & PELUNASAN"){
+                $totalPoin = walletUser($perekrut)['poin'] + 10;
+                $updateWallet = $walletClass->UpdateWallet("poin_balance",$totalPoin,$perekrut);
+            }else{
+                // CHECK DATA KONSULTAN
+                $checkKonsultan = $userClass->selectUser("oneCondition","code_referral",$konsultan);
+                // DELETE AKUN KONSULTAN JIKA ADA
+                if($checkKonsultan['nums'] > 0){
+                    $deleteKonsultan = $userClass->deleteUser($konsultan);
+                }
             }
             if($deleteKonsultan){
                 // DELETE BUKTI TF JIKA ADA
@@ -51,11 +57,6 @@ if(isset($_GET['idOrder']) && isset($_GET['param'])){
                     unlink($fotoKtp);
                     $deleteDataJamaah = $dataJamaahClass->deleteDataJamaah($idOrder);
                     if($deleteDataJamaah){
-                        // JIKA MENGGUNAKAN POIN MAKA KMBALIKAN POIN
-                        if($is_diskon == "GRATIS DP & PELUNASAN"){
-                            $totalPoin = walletUser($perekrut)['poin'] + 10;
-                            $updateWallet = $walletClass->UpdateWallet("poin_balance",$totalPoin,$perekrut);
-                        }
                         $_SESSION['alertSuccess'] = "Data terhapus.";
                         header('Location: pending-dp');
                         exit();
