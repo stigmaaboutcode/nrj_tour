@@ -52,9 +52,9 @@ class historyBonusPenjualanClass extends ConnectionsClass{
     public function selectHistoryBonusPenjualan(?string $param = null, ?string $key1 = null, ?string $key2 = null, ?string $key3 = null, ?string $key4 = null){
         // SET QUERY
         if($param == "allData"){
-            $sql = "SELECT * FROM " . $this->table_name . " date >= '" . $key1 . " 00:00:00' AND date <= '" . $key2 . " 23:59:59' ORDER BY date DESC";
+            $sql = "SELECT * FROM " . $this->table_name . " WHERE date >= '" . $key1 . " 00:00:00' AND date <= '" . $key2 . " 23:59:59' ORDER BY date DESC";
         }elseif($param == "byUser"){
-            $sql = "SELECT * FROM " . $this->table_name . " date >= '" . $key1 . " 00:00:00' AND date <= '" . $key2 . " 23:59:59' AND code_referral = '" . $key3 . "' ORDER BY date DESC";
+            $sql = "SELECT * FROM " . $this->table_name . " WHERE date >= '" . $key1 . " 00:00:00' AND date <= '" . $key2 . " 23:59:59' AND code_referral = '" . $key3 . "' ORDER BY date DESC";
         }
         // EXECUTE QUERY
         $exe = $this->dbConn()->query($sql);
