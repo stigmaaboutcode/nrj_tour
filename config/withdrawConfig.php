@@ -32,7 +32,7 @@ function dataTable(){
                     ' . dataBankUser($row['code_referral'])['nama_bank'] . '
                 </td>';
         }
-        echo   '<td>' . $fee . '</td>
+        echo   '<td>Rp.' . $fee . '</td>
                 <td>' . colorStatus($row['status']) . '</td>
                 <td>' . $row['date'] . '</td>
             </tr>';
