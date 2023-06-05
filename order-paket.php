@@ -121,7 +121,7 @@
                                     <hr>
                                     <div class="mb-2">
                                         <input type="text" name="pin" id="pin" class="form-control" placeholder="Masukkan pin anda" style="text-transform: uppercase;">
-                                        <p style="font-size: 0.6rem;"><strong>*untuk melakukan pembelian paket umroh / haji anda harus meliki pin yang dibuat oleh admin.</strong></p>
+                                        <p style="font-size: 0.6rem;"><strong>*untuk melakukan pembelian paket umroh / haji anda harus memiliki pin yang dibuat oleh admin.</strong></p>
                                     </div>
                                 </div>
                                 <div class="card-footer text-end">
@@ -189,7 +189,7 @@
                                                     </div>
                                                     <div class="col-12 col-sm-3 mb-3">
                                                         <label for="jk" class="form-label">Jenis Kelamin</label>
-                                                        <select required class="form-control form-control-sm" name="jk" id="jk">
+                                                        <select required class="form-select form-select-sm" name="jk" id="jk">
                                                             <option value="">--PILIH JENIS KELAMIN--</option>
                                                             <?php  
                                                                 $jkOpt = array("Laki-laki","Perempuan");
@@ -201,7 +201,7 @@
                                                     </div>
                                                     <div class="col-12 col-sm-3 mb-3">
                                                         <label for="statusperkawinan" class="form-label">Status Perkawinan</label>
-                                                        <select required class="form-control form-control-sm" name="statusperkawinan" id="statusperkawinan">
+                                                        <select required class="form-select form-select-sm" name="statusperkawinan" id="statusperkawinan">
                                                             <option value="">--PILIH STATUS PERKAWINAN--</option>
                                                             <?php  
                                                                 $jkOpt = array("Belum Kawin","Sudah Kawin","Cerai Hidup","Cerai Mati");
