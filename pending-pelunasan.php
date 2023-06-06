@@ -165,12 +165,29 @@
                                     <div class="mb-1" style="font-size: smaller;">
                                         Status Perkawinan : <?= dataJamaah($row['code_order'])['status_perkawinan'] ?>
                                     </div>
-                                    <div class="mb-1" style="font-size: smaller;">
+                                    <div class="mb-3" style="font-size: smaller;">
                                         Alamat : <br>
                                         <?= dataJamaah($row['code_order'])['kab_kota'] ?> -
                                         <?= dataJamaah($row['code_order'])['prov'] ?> <br>
                                         <?= dataJamaah($row['code_order'])['kec'] ?> <br>
                                         <?= dataJamaah($row['code_order'])['detail_alamat'] ?>
+                                    </div>
+                                    <h6>Data Kelengkapan</h6>
+                                    <hr>
+                                    <div class="mb-1" style="font-size: smaller;">
+                                        Nomor Paspor : <?= dataKelengkapan($row['code_order'])['no_passport'] ?>
+                                    </div>
+                                    <div class="mb-1" style="font-size: smaller;">
+                                        Tgl terbit Paspor : <?= dataKelengkapan($row['code_order'])['tgl_terbit'] ?>
+                                    </div>
+                                    <div class="mb-1" style="font-size: smaller;">
+                                        Tgl berlaku Paspor : <?= dataKelengkapan($row['code_order'])['tgl_berlaku'] ?>
+                                    </div>
+                                    <div class="mb-1" style="font-size: smaller;">
+                                        Dibuat di : <?= dataKelengkapan($row['code_order'])['alamat_terbit'] ?>
+                                    </div>
+                                    <div class="mb-1" style="font-size: smaller;">
+                                        Vaksin : <?= dataKelengkapan($row['code_order'])['is_vaksi'] ?>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
