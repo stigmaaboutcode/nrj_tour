@@ -1,2 +1,2 @@
-<meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-<meta content="Themesdesign" name="author" />
+<meta content="Sistem Manajemen Agen Umroh / Haji" name="description" />
+<meta content="stigmaaboutcode" name="author" />
