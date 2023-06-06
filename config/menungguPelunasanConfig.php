@@ -28,7 +28,7 @@ function dataTable(){
             $fee = $row['uang_muka'] > 0 ? "Rp." . number_format($row['uang_muka'],0,",",".") : "Gratis";
             echo '<tr>
                     <th> ' . $num++ . ' </th>
-                    <td><strong>' . $row['code_order'] . '</strong><br><i>(' . $row['category'] . ')</i></td>
+                    <td><strong>' . $row['code_order'] . '</strong><br> - <i>(' . $row['category'] . ')</i> - </td>
                     <td> ' . $fee . ' </td>
                     <td> ' . $row['is_diskon'] . ' </td>
                     <td>
