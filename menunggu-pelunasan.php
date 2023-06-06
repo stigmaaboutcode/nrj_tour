@@ -124,7 +124,6 @@
                     <?php  
                     $data = $dataPenjualanClass->selectDataPenjualan("oneCondition", "perekrut", $_SESSION['id_nrjtour']);
                     foreach($data['data'] as $row){
-                        $fee = $row['uang_muka'] > 0 ? "Rp." . number_format($row['uang_muka'],0,",",".") : "Gratis";
                         $show = $row['status'] == "MENUNGGU PELUNASAN" ? true : false;
                         if($show){
                     ?>
