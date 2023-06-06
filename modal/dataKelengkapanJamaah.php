@@ -55,7 +55,7 @@ class dataKelengkapanJamaahClass extends ConnectionsClass{
     public function selectDataKelengkapanJamaah(?string $param = null, ?string $key1 = null, ?string $key2 = null, ?string $key3 = null, ?string $key4 = null){
         // SET QUERY
         if($param == "oneCondition"){
-            $sql = "SELECT * FROM " . $this->table_name . " WHERE " . $key1 . " = '" . $key2 . "' ORDER BY date DESC";
+            $sql = "SELECT * FROM " . $this->table_name . " WHERE " . $key1 . " = '" . $key2 . "'";
         }
         // EXECUTE QUERY
         $exe = $this->dbConn()->query($sql);
