@@ -159,7 +159,7 @@ if(isset($_POST['resend'])){
         }
         if($statusForAksi == "DITOLAK"){
             $buktitfName = "GRATIS";
-            if($is_diskon == "TIDAK"){
+            if($is_diskon == "TIDAK ADA"){
                 // DELETE OLD FILE
                 unlink($bukti_tf_uang_muka);
                 // FOLDER
