@@ -4,6 +4,11 @@ if(!$_SESSION['loginNRJ']){
     exit();
 }
 
+if($role_user == "ADMIN"){
+    header('Location: dasbor');
+    exit();
+}
+
 $dataJamaahClass = new dataJamaahClass();
 $dataPenjualanClass = new dataPenjualanClass();
 $pinClass = new pinClass();
