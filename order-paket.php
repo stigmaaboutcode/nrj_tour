@@ -252,7 +252,7 @@
                                                     </div>
                                                     <div id="inputpin" class="col-12 col-sm-12 mb-3 hidden">
                                                         <label for="pinFreeInput" class="form-label">Pin Gratis DP</label>
-                                                        <input required class="form-control form-control-sm" type="text" id="pinFreeInput" style="text-transform: uppercase;" name="pinFreeInput" placeholder="Masukkan pin free anda">
+                                                        <input class="form-control form-control-sm" type="text" id="pinFreeInput" style="text-transform: uppercase;" name="pinFreeInput" placeholder="Masukkan pin free anda">
                                                     </div>
                                                     <div id="kategoriPembayaran" class="col-12 col-sm-6 mb-3">
                                                         <label for="category" class="form-label">Kategori</label>
@@ -309,6 +309,7 @@
     <script>
         var checkbox = document.getElementById('pinFree');
         var inputpin = document.getElementById('inputpin');
+        var pinFreeInput = document.getElementById('pinFreeInput');
         var kategoriPembayaran = document.getElementById('kategoriPembayaran');
         var kategoriRek = document.getElementById('kategoriRek');
         var kategoriBuktiTf = document.getElementById('kategoriBuktiTf');
@@ -337,6 +338,7 @@
                     category.removeAttribute("required");
                     rek.removeAttribute("required");
                     buktiTf.removeAttribute("required");
+                    pinFreeInput.setAttribute("required", "");
                 }
             } else {
                 inputpin.classList.add('hidden');
@@ -344,6 +346,7 @@
                 kategoriRek.classList.remove('hidden');
                 kategoriBuktiTf.classList.remove('hidden');
                 
+                pinFreeInput.removeAttribute("required");
                 category.setAttribute("required", "");
                 rek.setAttribute("required", "");
                 buktiTf.setAttribute("required", "");
