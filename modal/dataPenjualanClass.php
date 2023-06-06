@@ -95,6 +95,8 @@ class dataPenjualanClass extends ConnectionsClass{
             $sql = "UPDATE " . $this->table_name . " SET bukti_tf_uang_muka = '" . $value1 . "', status = 'PENDING' WHERE " . $key1 . " = '" . $key2 . "'";
         }elseif($param == "pelunasan"){
             $sql = "UPDATE " . $this->table_name . " SET paket_pelunasan = '" . $value1 . "', uang_pelunasan = '" . $value2 . "', bukti_tf_pelunasan = '" . $value3 . "', status = 'MENUNGGU KONFIRMASI PELUNASAN' WHERE " . $key1 . " = '" . $key2 . "'";
+        }elseif($param == "resendPelunasan"){
+            $sql = "UPDATE " . $this->table_name . " SET bukti_tf_pelunasan = '" . $value1 . "', status = 'MENUNGGU KONFIRMASI PELUNASAN' WHERE " . $key1 . " = '" . $key2 . "'";
         }
         // EXECUTE THE QUERY TO CREATE TABLE
         $exe = $this->dbConn()->query($sql);
