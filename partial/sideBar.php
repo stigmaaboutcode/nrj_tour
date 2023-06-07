@@ -101,8 +101,8 @@
                             <li><a href="bonus-penjualan">Perekrut</a></li>
                             <li><a href="javascript: void(0);" class="has-arrow">Matching</a>
                                 <ul class="sub-menu" aria-expanded="true">
-                                    <li><a href="javascript: void(0);">Rekap</a></li>
-                                    <li><a href="javascript: void(0);">Detail</a></li>
+                                    <li><a href="rekap-bonus-upline">Rekap Hari ini</a></li>
+                                    <li><a href="detail-bonus-upline">Detail</a></li>
                                 </ul>
                             </li>         
                         </ul>
@@ -238,7 +238,7 @@
                         </a> 
                         <ul class="sub-menu" aria-expanded="true">
                             <li><a href="bonus-penjualan">Penjualan Paket</a></li>
-                            <li><a href="javascript: void(0);">Matching</a></li>         
+                            <li><a href="bonus-matching">Matching</a></li>         
                         </ul>
                     </li>
                     <li>
