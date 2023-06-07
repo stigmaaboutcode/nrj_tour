@@ -9,13 +9,15 @@ if($role_user == "KONSULTAN"){
     $title = "Rekrutmen";
 }
 
+$dataPenjualanClass = new dataPenjualanClass();
+
 if(isset($_GET['user']) && isset($_GET['param'])){
     $id = $_GET['user'];
     $param = $_GET['param'];
     $updateUser = false;
     if($param == "suspen"){
         $updateUser = $userClass->UpdateUser("statusUser", $id, "TIDAK AKTIF");
-    }else{
+    }elseif($param == "aktif"){
         if(checkOrderMembrAktif($id)){
             $updateUser = $userClass->UpdateUser("statusUser", $id, "AKTIF");
         }else{
@@ -23,6 +25,10 @@ if(isset($_GET['user']) && isset($_GET['param'])){
             header('Location: data-member');
             exit();
         }
+    }elseif($param == "resetpass"){
+        $passDefault = "nrj123";
+        $passDefaultHash = password_hash($passDefault, PASSWORD_DEFAULT);
+        $updateUser = $userClass->UpdateUser("editPass", $id, $passDefaultHash);
     }
     if($updateUser){
         $_SESSION['alertSuccess'] = "Data tersimpan.";
@@ -60,12 +66,11 @@ function dataTable(){
                     <i>' . dataUser($row['upline'])['email'] . '<br>
                     +62' . dataUser($row['upline'])['no_telpn'] . '<i><a href="https://api.whatsapp.com/send?phone=62' . dataUser($row['upline'])['no_telpn'] . '" class="btn btn-sm text-success radius-5"><i class="mx-auto  ri-whatsapp-line"></i></a>&nbsp;&nbsp;&nbsp;
                 </td>
-                <td> 25 Paket Umroh </td>
                 <td>' . colorStatus($row['status']) . '</td>
                 <td>' . $row['join_date'] . '</td>';
         if($role_user != "KONSULTAN"){
             echo'<td>
-                    <a href="data-member?user=' . $row['code_referral'] . '&param=resetpass" class="btn btn-sm btn-primary"><i class="mx-auto ri-lock-unlock-line"></i></a>
+                    <a href="data-member?user=' . $row['code_referral'] . '&param=resetpass" class="btn btn-sm btn-secondary"><i class="mx-auto ri-lock-unlock-line"></i></a>
                     <a href="edit-data-member?user=' . $row['code_referral'] . '" class="btn btn-sm btn-warning"><i class="mx-auto ri-edit-line"></i></a>
                     ' . $btn . '
                 </td>';
@@ -73,6 +78,16 @@ function dataTable(){
         echo'</tr>';
     }
 }
+
+// JUMLAH PENJUALAM
+// function jumlahPenjualan($user){
+//     global $dataPenjualanClass;
+//     $total = 0;
+//     $data = $dataPenjualanClass->selectDataPenjualan("oneCondition", "perekrut", $user);
+    
+    
+//     return $total;
+// }
 
 // COLOR STATUS
 function colorStatus($txt){

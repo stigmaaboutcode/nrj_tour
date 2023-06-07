@@ -100,7 +100,7 @@
                                                 <th>#</th>
                                                 <th>Info User</th>
                                                 <th>Upline</th>
-                                                <th>Penjualan</th>
+                                                <!-- <th>Penjualan</th> -->
                                                 <th>status</th>
                                                 <th>tgl Gabung</th>
                                                 <?php if($role_user != "KONSULTAN"){ ?>
