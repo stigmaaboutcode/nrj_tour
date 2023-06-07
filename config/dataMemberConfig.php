@@ -64,7 +64,11 @@ function dataTable(){
                 <td>' . colorStatus($row['status']) . '</td>
                 <td>' . $row['join_date'] . '</td>';
         if($role_user != "KONSULTAN"){
-            echo'<td>' . $btn . '</td>';
+            echo'<td>
+                    <a href="data-member?user=' . $row['code_referral'] . '&param=resetpass" class="btn btn-sm btn-primary"><i class="mx-auto ri-lock-unlock-line"></i></a>
+                    <a href="edit-data-member?user=' . $row['code_referral'] . '" class="btn btn-sm btn-warning"><i class="mx-auto ri-edit-line"></i></a>
+                    ' . $btn . '
+                </td>';
         }
         echo'</tr>';
     }
