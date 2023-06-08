@@ -86,6 +86,31 @@ function dataTable($from, $to, $status){
     }
 }
 
+// REPORT PENJUALAN
+function reportPenjualan($from, $to, $status){
+    global $dataPenjualanClass;
+    global $role_user;
+    $data = $dataPenjualanClass->selectDataPenjualan("dateKonsultan", $_SESSION['id_nrjtour'], $from, $to);
+    if($role_user == "ADMIN"){
+        $data = $dataPenjualanClass->selectDataPenjualan("date", $from, $to);
+    }
+    $result['jumlahPaket'] = 0;
+    $result['jumlahDP'] = 0;
+    $result['jumlahPelunasan'] = 0;
+    foreach($data['data'] as $row){
+        $hitung = true;
+        if($status != "ALL"){
+            $hitung = $row['status'] == $status ? true : false;
+        }
+        if($hitung){
+            $result['jumlahPaket'] += 1;
+            $result['jumlahDP'] += $row['uang_muka'];
+            $result['jumlahPelunasan'] += $row['uang_pelunasan'];
+        }
+    }
+    return $result;
+}
+
 // DATA JAMAAH
 function dataJamaah($codeOrder){
     global $dataJamaahClass;

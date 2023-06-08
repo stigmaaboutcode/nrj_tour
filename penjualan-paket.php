@@ -93,37 +93,97 @@
                     <!-- END TABLE -->
 
                     <div class="row">
-                        <div class="col-12">
-                            <!-- SORTIR FITUR -->
-                            <div class="col-12 col-sm-12 mb-2">
-                                <form action="" method="post" class="card radius-10">
-                                    <div class="card-header">
-                                        <h7>Sortir Data</h7>
+                        <!-- SORTIR FITUR -->
+                        <div class="col-12 col-sm-12 mb-2">
+                            <form action="" method="post" class="card radius-10">
+                                <div class="card-header">
+                                    <h7>Sortir Data</h7>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 col-sm">
+                                            <label for="dari" class="form-label">Dari</label>
+                                            <input type="date" id="dari" value="<?= $from ?>" name="from" class="form-control form-control-sm" required>
+                                        </div>
+                                        <div class="col-12 col-sm">
+                                            <label for="sampai" class="form-label">Sampai</label>
+                                            <input type="date" id="sampai" value="<?= $to ?>" name="to" class="form-control form-control-sm" required>
+                                        </div>
+                                        <div class="col-12 col-sm">
+                                            <label for="statuss" class="form-label">Status</label>
+                                            <select required name="status" id="statuss" class="form-select form-select-sm" style="width: 100%">
+                                                <option value="">--PILIH STATUS--</option>
+                                                <?= optStatus($status) ?>
+                                            </select>
+                                        </div>  
                                     </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-12 col-sm">
-                                                <label for="dari" class="form-label">Dari</label>
-                                                <input type="date" id="dari" value="<?= $from ?>" name="from" class="form-control form-control-sm" required>
+                                </div>
+                                <div class="card-footer text-end">
+                                    <button type="submit" name="sortir" class="btn btn-primary btn-sm">Cari</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-12 col-sm-4 mb-2">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex text-muted">
+                                        <div class="flex-shrink-0  me-3 align-self-center">
+                                            <div class="avatar-sm">
+                                                <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
+                                                    <i class="ri-shopping-cart-line"></i>
+                                                </div>
                                             </div>
-                                            <div class="col-12 col-sm">
-                                                <label for="sampai" class="form-label">Sampai</label>
-                                                <input type="date" id="sampai" value="<?= $to ?>" name="to" class="form-control form-control-sm" required>
-                                            </div>
-                                            <div class="col-12 col-sm">
-                                                <label for="statuss" class="form-label">Status</label>
-                                                <select required name="status" id="statuss" class="form-select form-select-sm" style="width: 100%">
-                                                    <option value="">--PILIH STATUS--</option>
-                                                    <?= optStatus($status) ?>
-                                                </select>
-                                            </div>  
+                                        </div>
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <p class="mb-1">Total Orderan</p>
+                                            <h5 class="mb-3"><?= number_format(reportPenjualan($from, $to, $status)['jumlahPaket'],0,",",".") ?> Paket</h5>
                                         </div>
                                     </div>
-                                    <div class="card-footer text-end">
-                                        <button type="submit" name="sortir" class="btn btn-primary btn-sm">Cari</button>
-                                    </div>
-                                </form>
+                                </div>
+                                <!-- end card-body -->
                             </div>
+                        </div>
+                        <div class="col-12 col-sm-4 mb-2">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex text-muted">
+                                        <div class="flex-shrink-0  me-3 align-self-center">
+                                            <div class="avatar-sm">
+                                                <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
+                                                    <i class="ri-price-tag-3-line"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <p class="mb-1">Total DP</p>
+                                            <h5 class="mb-3">Rp.<?= number_format(reportPenjualan($from, $to, $status)['jumlahDP'],0,",",".") ?></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end card-body -->
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4 mb-2">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex text-muted">
+                                        <div class="flex-shrink-0  me-3 align-self-center">
+                                            <div class="avatar-sm">
+                                                <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
+                                                    <i class="ri-price-tag-3-line"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <p class="mb-1">Total Pelunasan</p>
+                                            <h5 class="mb-3">Rp.<?= number_format(reportPenjualan($from, $to, $status)['jumlahPelunasan'],0,",",".") ?></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end card-body -->
+                            </div>
+                        </div>
+                        <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
                                     <div id="downloadPdfBtn"></div>
