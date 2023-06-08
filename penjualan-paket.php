@@ -281,8 +281,10 @@
                                     <?php } ?>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
+                                    <?php if($role_user == "ADMIN"){ ?>
+                                        <a href="edit-jamaah?idOrder=<?= $row['code_order'] ?>" class="btn btn-warning text-dark">Edit Data</a>
+                                    <?php } ?>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
