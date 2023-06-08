@@ -227,7 +227,7 @@
                     </li>
                     <li>
                         <a href="penjualan-paket" class="waves-effect">
-                            <i class=" ri-shopping-cart-line"></i>
+                            <i class="ri-shopping-cart-line"></i>
                             <span>Penjualan Paket</span>
                         </a>
                     </li>
