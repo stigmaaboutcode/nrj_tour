@@ -57,7 +57,7 @@ function dataTable($from, $to, $status){
             if($row['status'] != "PENDING" && $row['status'] != "DITOLAK" && $row['status'] != "MENUNGGU PELUNASAN"){
                 $tglBerangkat = '<br>' . dataJamaah($row['code_order'])['tgl_berangkat'];
                 $pelunasanFee = $row['uang_pelunasan'] > 0 ? "Rp." . number_format($row['uang_pelunasan'],0,",",".") : "Gratis";
-                $categoryPelunasan = '<br>' . $row['paket_pelunasan'];
+                $categoryPelunasan = $row['paket_pelunasan'] != 'GRATIS' ? '<br>(' . $row['paket_pelunasan'] . ')' : '';
             }
             echo '<tr>
                     <th> ' . $num++ . ' </th>
