@@ -110,7 +110,7 @@
                                             <input type="date" id="sampai" value="<?= $endMonth ?>" name="to" class="form-control form-control-sm" required>
                                         </div>
                                         <div class="col-12 col-sm">
-                                            <label for="sampai" class="form-label">Konsultan</label>
+                                            <label for="konsultan" class="form-label">Konsultan</label>
                                             <select required name="konsultan" id="konsultan" class="form-select form-select-sm" style="width: 100%">
                                                 <option value="all">Semua</option>
                                                 <?= optUser($userID) ?>
