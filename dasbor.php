@@ -88,7 +88,7 @@
                                             <div class="flex-shrink-0  me-3 align-self-center">
                                                 <div class="avatar-sm">
                                                     <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
-                                                        <i class="ri-coin-line"></i>
+                                                        <i class="ri-wallet-3-line"></i>
                                                     </div>
                                                 </div>
                                             </div>
