@@ -76,10 +76,57 @@
 
                     <?php if($role_user == "ADMIN"){ ?>
                         <!-- ========== START TAMPILAN ADMIN ========== -->
-
+                        <h5>Penjualan Bulan Ini</h5>
+                        <hr>
+                        <div class="row">
+                            <div class="col-12 col-sm-6 mb-2">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex text-muted">
+                                            <div class="flex-shrink-0  me-3 align-self-center">
+                                                <div class="avatar-sm">
+                                                    <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
+                                                        <i class="ri-price-tag-3-line"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <p class="mb-1">Pembayaran DP</p>
+                                                <h5 class="mb-3">Rp.<?= number_format(reportPenjualan($from, $to)['jumlahDP'],0,",",".") ?></h5>
+                                                <p class="text-truncate mb-0" style="font-size: smaller;">Total <?= number_format(reportPenjualan($from, $to)['numDP'],0,",",".") ?> Paket Umroh / Haji</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 mb-2">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex text-muted">
+                                            <div class="flex-shrink-0  me-3 align-self-center">
+                                                <div class="avatar-sm">
+                                                    <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
+                                                        <i class="ri-price-tag-3-line"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <p class="mb-1">Pembayaran Pelunasan</p>
+                                                <h5 class="mb-3">Rp.<?= number_format(reportPenjualan($from, $to)['jumlahPelunasan'],0,",",".") ?></h5>
+                                                <p class="text-truncate mb-0" style="font-size: smaller;">Total <?= number_format(reportPenjualan($from, $to)['numPelunasan'],0,",",".") ?> Paket Umroh / Haji</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
+                            </div>
+                        </div>
                         <!-- END TAMPILAN ADMIN -->
                     <?php }else{ ?>
                         <!-- ========== START TAMPILAN MEMBER ========== -->
+                        <h5>E-wallet</h5>
+                        <hr>
                         <div class="row">
                             <div class="col-xl-6 col-sm-6">
                                 <div class="card">
@@ -124,6 +171,94 @@
                                     <!-- end card-body -->
                                 </div>
                                 <!-- end card -->
+                            </div>
+                        </div>
+                        <h5>Laporan Bulan Ini</h5>
+                        <hr>
+                        <div class="row">
+                            <div class="col-12 col-sm-3 mb-2">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex text-muted">
+                                            <div class="flex-shrink-0  me-3 align-self-center">
+                                                <div class="avatar-sm">
+                                                    <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
+                                                        <i class="ri-coin-line"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <p class="mb-1">Bonus Penjualan</p>
+                                                <h5 class="mb-3">Rp.<?= totalBonus($from, $to) ?></h5>
+                                                <p class="text-truncate mb-0" style="font-size: smaller;">Total bonus dari hasil penjualan anda</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-3 mb-2">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex text-muted">
+                                            <div class="flex-shrink-0  me-3 align-self-center">
+                                                <div class="avatar-sm">
+                                                    <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
+                                                        <i class="ri-coin-line"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <p class="mb-1">Bonus Matching</p>
+                                                <h5 class="mb-3">Rp.<?= totalBonusMatching($from, $to) ?></h5>
+                                                <p class="text-truncate mb-0" style="font-size: smaller;">Total bonus dari hasil penjualan Downline</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-3 mb-2">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex text-muted">
+                                            <div class="flex-shrink-0  me-3 align-self-center">
+                                                <div class="avatar-sm">
+                                                    <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
+                                                        <i class="ri-price-tag-3-line"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <p class="mb-1">Pembayaran DP</p>
+                                                <h5 class="mb-3">Rp.<?= number_format(reportPenjualan($from, $to)['jumlahDP'],0,",",".") ?></h5>
+                                                <p class="text-truncate mb-0" style="font-size: smaller;">Total <?= number_format(reportPenjualan($from, $to)['numDP'],0,",",".") ?> Paket Umroh / Haji</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-3 mb-2">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex text-muted">
+                                            <div class="flex-shrink-0  me-3 align-self-center">
+                                                <div class="avatar-sm">
+                                                    <div class="avatar-title bg-light rounded-circle text-primary font-size-20">
+                                                        <i class="ri-price-tag-3-line"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <p class="mb-1">Pembayaran Pelunasan</p>
+                                                <h5 class="mb-3">Rp.<?= number_format(reportPenjualan($from, $to)['jumlahPelunasan'],0,",",".") ?></h5>
+                                                <p class="text-truncate mb-0" style="font-size: smaller;">Total <?= number_format(reportPenjualan($from, $to)['numPelunasan'],0,",",".") ?> Paket Umroh / Haji</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
                             </div>
                         </div>
                         <div class="modal fade" id="withdraw" tabindex="-1"

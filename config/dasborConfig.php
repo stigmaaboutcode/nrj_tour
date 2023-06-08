@@ -6,9 +6,15 @@ if(!$_SESSION['loginNRJ']){
 
 $walletClass = new walletClass();
 $withdrawClass = new withdrawClass();
+$historyBonusPenjualanClass = new historyBonusPenjualanClass();
+$dataPenjualanClass = new dataPenjualanClass();
 $dataBankUserClass = new dataBankUserClass();
+$historyBonusUplineClass = new historyBonusUplineClass();
 $formatInputClass = new formatInputClass();
 $dateTimeNow = $formatInputClass->date()['dateTimeNow'];
+
+$from = $formatInputClass->date()['startMonth'];
+$to = $formatInputClass->date()['endMonth'];
 
 // CREATE WALLET IF USER NOT ADMIN
 if($role_user != "ADMIN"){
@@ -44,6 +50,52 @@ if(isset($_POST['withdrawBonus'])){
             exit();
         }
     }
+}
+
+// REPORT PENJUALAN
+function reportPenjualan($from, $to){
+    global $dataPenjualanClass;
+    global $role_user;
+    $data = $dataPenjualanClass->selectDataPenjualan("dateKonsultan", $_SESSION['id_nrjtour'], $from, $to);
+    if($role_user == "ADMIN"){
+        $data = $dataPenjualanClass->selectDataPenjualan("date", $from, $to);
+    }
+    $result['jumlahDP'] = 0;
+    $result['numDP'] = 0;
+    $result['jumlahPelunasan'] = 0;
+    $result['numPelunasan'] = 0;
+    foreach($data['data'] as $row){
+        if($row['status'] == "LUNAS"){
+            $result['jumlahDP'] += $row['uang_muka'];
+            $result['numDP'] += 1;
+            $result['jumlahPelunasan'] += $row['uang_pelunasan'];
+            $result['numPelunasan'] += 1;
+        }elseif($row['status'] == "MENUNGGU PELUNASAN" || $row['status'] == "MENUNGGU KONFIRMASI PELUNASAN" || $row['status'] == "PELUNASAN DITOLAK"){
+            $result['jumlahDP'] += $row['uang_muka'];
+            $result['numDP'] += 1;
+        }
+    }
+    return $result;
+}
+
+function totalBonus($from, $to){
+    global $historyBonusPenjualanClass;
+    $total = 0;
+    $data = $historyBonusPenjualanClass->selectHistoryBonusPenjualan("byUser", $from, $to, $_SESSION['id_nrjtour']);
+    foreach($data['data'] as $row){
+        $total += $row['nominal'];
+    }
+    echo number_format($total,0,",",".");
+}
+
+function totalBonusMatching($from, $to){
+    global $historyBonusUplineClass;
+    $total = 0;
+    $data = $historyBonusUplineClass->selectHistoryBonusUpline("byUser", $from, $to, $_SESSION['id_nrjtour']);
+    foreach($data['data'] as $row){
+        $total += $row['nominal'];
+    }
+    echo number_format($total,0,",",".");
 }
 
 // DATA BANK
