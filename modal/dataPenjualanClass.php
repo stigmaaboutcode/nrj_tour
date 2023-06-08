@@ -68,6 +68,10 @@ class dataPenjualanClass extends ConnectionsClass{
             $sql = "SELECT * FROM " . $this->table_name . " WHERE " . $key1 . " = '" . $key2 . "' ORDER BY date DESC";
         }elseif($param == "dateUser"){
             $sql = "SELECT * FROM " . $this->table_name . " WHERE perekrut = '" . $key1 . "' AND (date >= '" . $key2 . " 00:00:00' AND date <= '" . $key3 . " 23:59:59') ORDER BY date DESC LIMIT 1";
+        }elseif($param == "dateKonsultan"){
+            $sql = "SELECT * FROM " . $this->table_name . " WHERE perekrut = '" . $key1 . "' AND (date >= '" . $key2 . " 00:00:00' AND date <= '" . $key3 . " 23:59:59') ORDER BY date DESC";
+        }elseif($param == "date"){
+            $sql = "SELECT * FROM " . $this->table_name . " WHERE date >= '" . $key1 . " 00:00:00' AND date <= '" . $key2 . " 23:59:59' ORDER BY date DESC";
         }else{
             $sql = "SELECT * FROM " . $this->table_name . " ORDER BY date DESC";
         }

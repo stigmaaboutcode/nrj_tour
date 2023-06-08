@@ -87,7 +87,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="javascript: void(0);" class="waves-effect">
+                        <a href="penjualan-paket" class="waves-effect">
                             <i class=" ri-shopping-cart-line"></i>
                             <span>Penjualan Paket</span>
                         </a>
@@ -226,7 +226,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="javascript: void(0);" class="waves-effect">
+                        <a href="penjualan-paket" class="waves-effect">
                             <i class=" ri-shopping-cart-line"></i>
                             <span>Penjualan Paket</span>
                         </a>
