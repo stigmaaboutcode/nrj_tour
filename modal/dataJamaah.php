@@ -101,10 +101,12 @@ class dataJamaahClass extends ConnectionsClass{
     }
 
     // UPDATE TABLE
-    public function UpdateDataJamaah(?string $param = null, ?string $key1 = null, ?string $key2 = null, ?string $value1 = null, ?string $value2 = null){
+    public function UpdateDataJamaah(?string $param = null, ?string $key1 = null, ?string $key2 = null, ?string $value1 = null, ?string $value2 = null, ?string $value3 = null, ?string $value4 = null, ?string $value5 = null, ?string $value6 = null, ?string $value7 = null, ?string $value8 = null, ?string $value9 = null, ?string $value10 = null, ?string $value11 = null, ?string $value12 = null, ?string $value13 = null, ?string $value14 = null){
         // SET QUERY
         if($param == "tglKeberangkatan"){
-            $sql = "UPDATE " . $this->table_name . " SET tgl_berangkat  = '" . $value1 . "' WHERE " . $key1 . " = '" . $key2 . "'";
+            $sql = "UPDATE " . $this->table_name . " SET tgl_berangkat = '" . $value1 . "' WHERE " . $key1 . " = '" . $key2 . "'";
+        }elseif($param == "allData"){
+            $sql = "UPDATE " . $this->table_name . " SET foto_ktp = '" . $value1 . "', nik = '" . $value2 . "', nama = '" . $value3 . "', tempat_lahir = '" . $value4 . "', tgl_lahir = '" . $value5 . "', detail_alamat = '" . $value6 . "', prov = '" . $value7 . "', id_prov = '" . $value8 . "', kab_kota = '" . $value9 . "', id_kab_kota = '" . $value10 . "', kec = '" . $value11 . "', id_kec = '" . $value12 . "', jk = '" . $value13 . "', status_perkawinan = '" . $value14 . "' WHERE " . $key1 . " = '" . $key2 . "'";
         }
         // EXECUTE THE QUERY TO CREATE TABLE
         $exe = $this->dbConn()->query($sql);
