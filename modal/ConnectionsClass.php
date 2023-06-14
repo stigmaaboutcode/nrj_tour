@@ -5,9 +5,13 @@ class ConnectionsClass{
 
     // SET ATTRIBUTE CONFIG DB
     private $servername = "localhost"; // SERVER NAME
-    private $username = "root"; // USERNAME
-    private $password = ""; // PASSWORD
-    private $dbname = "nrj_tour"; // DATABASE NAME
+    // private $username = "root"; // USERNAME
+    // private $password = ""; // PASSWORD
+    // private $dbname = "nrj_tour"; // DATABASE NAME
+    
+    private $username = "n1577719_nrjtours"; // USERNAME
+    private $password = "Ideta2023"; // PASSWORD
+    private $dbname = "n1577719_nrjtours"; // DATABASE NAME
 
     // METHOD CONNECT TO DB
     protected function dbConn(){
