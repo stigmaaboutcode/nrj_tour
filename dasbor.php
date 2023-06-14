@@ -1,5 +1,4 @@
 <?php
-    
     include "func/formatInput.php"; // FUNCTION
     include "config/userLogin.php"; // USER LOGIN
     include "config/dasborConfig.php"; // STATUS ORDER

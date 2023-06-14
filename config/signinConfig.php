@@ -23,10 +23,6 @@ require_once "modal/walletClass.php";
 require_once "modal/withdrawClass.php";
 require_once "modal/userClass.php";
 
-
-
-
-
 // SET userClass
 $userClass = new userClass;
 

@@ -1,5 +1,4 @@
-<?php  
-include "apiDb.php";
+<?php
 include "func/formatInput.php";
 include "config/signinConfig.php";
 ?>
