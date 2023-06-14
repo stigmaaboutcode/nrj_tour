@@ -159,7 +159,7 @@
                     <li>
                         <a href="order-paket" class="waves-effect">
                             <i class="ri-add-circle-line"></i>
-                            <span>Order Paket</span>
+                            <span>Registrasi</span>
                         </a>
                     </li>
                     <li>
@@ -216,6 +216,12 @@
                         <a href="tukar-bonus-dan-poin" class="waves-effect">
                             <i class="ri-arrow-left-right-line"></i>
                             <span>Tukar Bonus & Poin</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pin-transaksi" class="waves-effect">
+                            <i class="ri-rotate-lock-line"></i>
+                            <span>Pin Transaksi</span>
                         </a>
                     </li>
                     <li class="menu-title">Data & Laporan</li>

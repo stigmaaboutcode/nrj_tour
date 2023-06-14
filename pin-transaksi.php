@@ -74,8 +74,7 @@
                     <!-- ========== START TAMPILAN ADMIN ========== -->
                     <div class="row">
                         <div class="col-12">
-                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <form action="" method="post"><h4 class="mb-sm-0"><?= $title ?> <button type="submit" name="addPin" class="btn btn-sm btn-outline-success" onclick="showAlert()">Add</button></form> </h4>
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between"><h4 class="mb-sm-0"><?= $title ?> </h4>
 
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
@@ -90,7 +89,49 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-12">
+                        <?php if($role_user == "ADMIN"){ ?>
+                        <div class="col-12 col-sm-4 mb-2">
+                            <form action="" method="post" class="card radius-10">
+                                <div class="card-body">
+                                    <h7 class="card-title">Kirim PIN</h7>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 mb-3">
+                                            <label for="konsultan" class="form-label">Konsultan</label>
+                                            <select required name="konsultan" id="konsultan" class="form-select form-select-sm" style="width: 100%">
+                                                <option value="ALL">Semua</option>
+                                                <?= optUser($userID) ?>
+                                            </select>
+                                        </div>  
+                                        <div class="col-12 col-sm-12 mb-3">
+                                            <label for="jumlahPin" class="form-label">Jumlah PIN</label>
+                                            <input required type="number" name="jumlahPin" id="jumlahPin" class="form-control form-control-sm" placeholder="Masukkan Jumlah PIN">
+                                        </div>  
+                                        <div class="col-12 col-sm-12 mb-3">
+                                            <label for="categoryPin" class="form-label">Kategori</label>
+                                            <div style="display: flex; justify-content: space-around;">
+                                            <?php
+                                                $opt = array('pinFree'=>'PIN FREE', 'pinRegis'=>'PIN REGISTRASI', 'pinPelunasan'=>'PIN PELUNASAN');
+                                                foreach($opt as $key => $checkbox){
+                                            ?>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="<?= $key ?>" id="<?= $key ?>" checked>
+                                                    <label class="form-check-label" for="<?= $key ?>">
+                                                        <?= $checkbox ?>
+                                                    </label>
+                                                </div>
+                                            <?php } ?>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="card-footer text-end">
+                                    <button type="submit" name="addPin" class="btn btn-sm btn-outline-success" onclick="showAlert()">Add</button>
+                                </div>
+                            </form>
+                        </div>
+                        <?php } ?>
+                        <div class="col-12 col-sm mb-2">
                             <div class="card">
                                 <div class="card-body">
                                     <div id="downloadPdfBtn"></div>
@@ -98,15 +139,17 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
+                                                <?php if($role_user == "ADMIN"){ ?>
                                                 <th>Konsultan</th>
-                                                <th>Pin Free</th>
-                                                <th>Pin DP</th>
-                                                <th>Pin Pelunasan</th>
+                                                <?php } ?>
+                                                <th>PIN</th>
+                                                <th>Kategori</th>
+                                                <th>Status</th>
                                                 <th>Tanggal</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?= dataTable() ?>
+                                            <?= dataPinUser() ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -159,7 +202,7 @@
 
             new $.fn.dataTable.Buttons(table, {
                 buttons: [{
-                        extend: 'pdfHtml5',
+                    extend: 'pdfHtml5',
                         className: 'buttons-pdf buttons-html5',
                         customize: function (doc) {
                             // Mengatur orientasi menjadi landscape
@@ -167,9 +210,11 @@
 
                             // Mengatur style agar data jamaah pada kolom "Data Jamaah" ditampilkan dalam satu baris
                             doc.content[1].table.body.forEach(function (row) {
-                                if (row[5].text) {
-                                    row[5].text = row[5].text.replace(/<br\s*\/?>/ig, ' ');
-                                }
+                                row.forEach(function (cell, cellIndex) {
+                                    if (cell.text && cellIndex === 5) {
+                                        cell.text = cell.text.replace(/<br\s*\/?>/ig, ' ');
+                                    }
+                                });
                             });
                         }
                     },
@@ -220,29 +265,41 @@
     <?php } ?>
     <script>
         function showAlert() {
-            let timerInterval
+            let timerInterval;
+
             Swal.fire({
                 title: 'Generate Pin!',
                 html: 'time in <b></b> milliseconds.',
-                timer: 2000,
                 timerProgressBar: true,
                 didOpen: () => {
-                    Swal.showLoading()
-                    const b = Swal.getHtmlContainer().querySelector('b')
+                    Swal.showLoading();
+                    const b = Swal.getHtmlContainer().querySelector('b');
+                    let startTime = new Date().getTime(); // Waktu saat halaman dimulai dimuat
+
                     timerInterval = setInterval(() => {
-                    b.textContent = Swal.getTimerLeft()
-                    }, 100)
+                        const currentTime = new Date().getTime(); // Waktu saat ini
+                        const elapsedTime = currentTime - startTime; // Waktu yang sudah berlalu
+                        b.textContent = elapsedTime;
+                    }, 100);
                 },
                 willClose: () => {
-                    clearInterval(timerInterval)
+                    clearInterval(timerInterval);
                 }
-                }).then((result) => {
+            }).then((result) => {
                 /* Read more about handling dismissals below */
                 if (result.dismiss === Swal.DismissReason.timer) {
-                    console.log('I was closed by the timer')
+                    console.log('I was closed by the timer');
                 }
-            })
+            });
         }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#konsultan').select2();
+        });
+
     </script>
 
 </body>

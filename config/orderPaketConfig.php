@@ -47,9 +47,10 @@ if(isset($_POST['submitPin'])){
         header('Location: order-paket');
         exit();
     }else{
-        $checkPinDp = $pinClass->selectPin("pinUangMuka",$pinInput,$dateNow,$_SESSION['id_nrjtour']);
+        $checkPinDp = $pinClass->selectPin("checkPIN",$_SESSION['id_nrjtour'],$pinInput,"PIN REGISTRASI");
         if($checkPinDp['nums'] > 0){
             $_SESSION['alertSuccess'] = "Success.";
+            $_SESSION['pinRegisUsed'] = $pinInput;
             $_SESSION['inputOrderNrj'] = true;
         }else{
             $_SESSION['alertError'] = "Pin tidak berlaku.";
@@ -79,21 +80,17 @@ if(isset($_POST['createOrder'])){
         $pinFreeCheck = isset($_POST['pinFree']) ? true : false;
         // MENGGUNAKAN POIN DAN LIMIT POIN BLM MENCAPAI BATAS
         if($pinFreeCheck){
-            if(checkUsedPinFree() < 10){
-                $pinFree = strtoupper(trim($_POST['pinFreeInput']));
-                $checkPinFree = $pinClass->selectPin("pinFree",$pinFree,$dateNow,$_SESSION['id_nrjtour']);
-                // PIN TERSEDIA 
-                if($checkPinFree['nums'] > 0){
-                    $isDiskon = "GRATIS DP";
-                }else{
-                    $getMakeKonsultan = false;
-                    $inputKonsultan = false;
-                    $_SESSION['alertError'] = "Pin tidak berlaku.";
-                }
+            $pinFree = strtoupper(trim($_POST['pinFreeInput']));
+            $checkPinFree = $pinClass->selectPin("checkPIN",$_SESSION['id_nrjtour'],$pinFree,"PIN FREE");
+            // PIN TERSEDIA 
+            if($checkPinFree['nums'] > 0){
+                $pinClass->UpdatePin($_SESSION['id_nrjtour'],$pinFree,"PIN FREE");
+                $isDiskon = "GRATIS DP";
+
             }else{
                 $getMakeKonsultan = false;
                 $inputKonsultan = false;
-                $_SESSION['alertError'] = "Poin tidak cukup.";
+                $_SESSION['alertError'] = "Pin Free tidak berlaku.";
             }
         }
         if($getMakeKonsultan){
@@ -173,16 +170,22 @@ if(isset($_POST['createOrder'])){
                     // PENGURANGAN SALDO POIN
                     $totalPoin = $jumlahPoin - 10;
                     $updateWallet = $walletClass->UpdateWallet("poin_balance",$totalPoin,$_SESSION['id_nrjtour']);
+
                     if($updateWallet){
+                        $pinClass->UpdatePin($_SESSION['id_nrjtour'], $_SESSION['pinRegisUsed'], "PIN REGISTRASI");
+                        $_SESSION['pinRegisUsed'] = "";
                         $_SESSION['alertSuccess'] = "Data tersimpan.";
                         header('Location: order-paket');
                         exit();
                     }
                 }else{
+                    $pinClass->UpdatePin($_SESSION['id_nrjtour'], $_SESSION['pinRegisUsed'], "PIN REGISTRASI");
+                    $_SESSION['pinRegisUsed'] = "";
                     $_SESSION['alertSuccess'] = "Data tersimpan.";
                     header('Location: order-paket');
                     exit();
                 }
+
             }
         }
     }

@@ -3,10 +3,6 @@ if(!$_SESSION['loginNRJ']){
     header('Location: signin');
     exit();
 }
-if($role_user != "ADMIN"){
-    header('Location: pin-transaksi');
-    exit();
-}
 $title = "Pin Transaksi";
 
 $pinClass = new pinClass();
@@ -14,121 +10,150 @@ $formatInputClass = new formatInputClass();
 $dateNow = $formatInputClass->date()['dateNow'];
 
 if(isset($_POST['addPin'])){
-    sleep(2);
-    $totalCreatePin = 0;
-    $getUser = $userClass->selectUser("oneCondition", "role_user", "KONSULTAN");
-    foreach($getUser['data'] as $row){
-        if($row['status'] == "AKTIF"){
-            // CHECK PIN IF EXIST
-            $pinCheck = $pinClass->selectPin("dataPinUser",$row['code_referral'],$dateNow);
-            if($pinCheck['nums'] == 0){
-                $insertPin = $pinClass->insertPin($row['code_referral'],pinFree(),pinDp(),pinPelunasan(),$dateNow);
-                $totalCreatePin += 1;
+    $jumlahPIN = preg_replace('/[^0-9]/','', trim($_POST['jumlahPin']));
+    if($jumlahPIN == ""){
+        $_SESSION['alertError'] = "Masukkan Jumlah PIN.";
+        header('Location: pin-transaksi');
+        exit();
+    }else{
+        $konsultanID = $_POST['konsultan'];
+        $pinFree = isset($_POST['pinFree']) ? true : false;
+        $pinRegistrasi = isset($_POST['pinRegis']) ? true : false;
+        $pinPelunasan = isset($_POST['pinPelunasan']) ? true : false;
+        if($konsultanID != "ALL"){
+            if($pinFree && $pinRegistrasi && $pinPelunasan){
+                pinCreated($konsultanID,"PIN FREE",$jumlahPIN);
+                pinCreated($konsultanID,"PIN REGISTRASI",$jumlahPIN);
+                pinCreated($konsultanID,"PIN PELUNASAN",$jumlahPIN);
+            }elseif($pinFree && $pinRegistrasi){
+                pinCreated($konsultanID,"PIN FREE",$jumlahPIN);
+                pinCreated($konsultanID,"PIN REGISTRASI",$jumlahPIN);
+            }elseif($pinFree && $pinPelunasan){
+                pinCreated($konsultanID,"PIN FREE",$jumlahPIN);
+                pinCreated($konsultanID,"PIN PELUNASAN",$jumlahPIN);
+            }elseif($pinRegistrasi && $pinPelunasan){
+                pinCreated($konsultanID,"PIN REGISTRASI",$jumlahPIN);
+                pinCreated($konsultanID,"PIN PELUNASAN",$jumlahPIN);
+            }elseif($pinFree){
+                pinCreated($konsultanID,"PIN FREE",$jumlahPIN);
+            }elseif($pinRegistrasi){
+                pinCreated($konsultanID,"PIN REGISTRASI",$jumlahPIN);
+            }elseif($pinPelunasan){
+                pinCreated($konsultanID,"PIN PELUNASAN",$jumlahPIN);
+            }else{
+                $_SESSION['alertError'] = "Pilih kategori.";
+                header('Location: pin-transaksi');
+                exit();
+            }
+        }else{
+            $dataKonsultan = $userClass->selectUser("oneCondition","role_user","KONSULTAN");
+            foreach($dataKonsultan['data'] as $rows){
+                if($pinFree && $pinRegistrasi && $pinPelunasan){
+                    pinCreated($rows['code_referral'],"PIN FREE",$jumlahPIN);
+                    pinCreated($rows['code_referral'],"PIN REGISTRASI",$jumlahPIN);
+                    pinCreated($rows['code_referral'],"PIN PELUNASAN",$jumlahPIN);
+                }elseif($pinFree && $pinRegistrasi){
+                    pinCreated($rows['code_referral'],"PIN FREE",$jumlahPIN);
+                    pinCreated($rows['code_referral'],"PIN REGISTRASI",$jumlahPIN);
+                }elseif($pinFree && $pinPelunasan){
+                    pinCreated($rows['code_referral'],"PIN FREE",$jumlahPIN);
+                    pinCreated($rows['code_referral'],"PIN PELUNASAN",$jumlahPIN);
+                }elseif($pinRegistrasi && $pinPelunasan){
+                    pinCreated($rows['code_referral'],"PIN REGISTRASI",$jumlahPIN);
+                    pinCreated($rows['code_referral'],"PIN PELUNASAN",$jumlahPIN);
+                }elseif($pinFree){
+                    pinCreated($rows['code_referral'],"PIN FREE",$jumlahPIN);
+                }elseif($pinRegistrasi){
+                    pinCreated($rows['code_referral'],"PIN REGISTRASI",$jumlahPIN);
+                }elseif($pinPelunasan){
+                    pinCreated($rows['code_referral'],"PIN PELUNASAN",$jumlahPIN);
+                }else{
+                    break;
+                    $_SESSION['alertError'] = "Pilih kategori.";
+                    header('Location: pin-transaksi');
+                    exit();
+                }
             }
         }
+        $_SESSION['alertSuccess'] = "Success.";
+        header('Location: pin-transaksi');
+        exit();
     }
-    if($totalCreatePin > 0){
-        $_SESSION['alertSuccess'] = "Pin Berhasil dibuat.";
-        header('Location: pin-transaksi');
-        exit();
-    }else{
-        $_SESSION['alertError'] = "Pin sudah tersedia.";
-        header('Location: pin-transaksi');
-        exit();
+
+}
+
+// OPT USER 
+function optUser($user){
+    global $userClass;
+    $data = $userClass->selectUser("oneCondition","role_user","KONSULTAN");
+    foreach($data['data'] as $row){
+        $selectd = $user == $row['code_referral'] ? 'selected="selected"' : '';
+        echo '<option value="' . $row['code_referral'] . '" ' . $selectd . '>' . $row['name'] . '</option>';
     }
 }
-// DATA TABLE
-function dataTable(){
-    global $userClass;
+
+// DATA PIN
+function dataPinUser(){
+    global $pinClass;
     global $role_user;
     $num = 1;
-    $data = $userClass->selectUser("oneCondition", "role_user", "KONSULTAN");
-
+    if($role_user == "ADMIN"){
+        $data = $pinClass->selectPin("aLL");
+    }else{
+        $data = $pinClass->selectPin("UserPin", $_SESSION['id_nrjtour']);
+    }
     foreach($data['data'] as $row){
-        if($row['status'] == "AKTIF"){
-            echo '<tr>
-                    <th> ' . $num++ . ' </th>
-                    <td>
-                        <strong>' . $row['name'] . '</strong><br>
-                    </td>
-                    <td> ' . dataPinUser($row['code_referral'])['free'] . ' </td>
-                    <td> ' . dataPinUser($row['code_referral'])['dp'] . ' </td>
-                    <td> ' . dataPinUser($row['code_referral'])['pelunasan'] . ' </td>
-                    <td> ' . dataPinUser($row['code_referral'])['tgl'] . ' </td>
-                </tr>';
-        }
+        $user = $role_user == "ADMIN" ? '<td> ' . dataUser($row['code_referral'])['name'] . ' </td>' : '';
+        echo '<tr>
+                <th> ' . $num++ . ' </th>
+                ' . $user . '
+                <td> ' . $row['pin'] . ' </td>
+                <td> ' . $row['category'] . ' </td>
+                <td> ' . statusPin($row['status']) . ' </td>
+                <td> ' . ubahFormatTanggal($row['date_create']) . ' </td>
+            </tr>';
     }
 }
 
-// DATA PIN USER
-function dataPinUser($user){
-    global $pinClass;
+// CREATE PIN FREE
+function pinCreated($user, $category, $jumlah){
     global $dateNow;
-
-    $data = $pinClass->selectPin("dataPinUser", $user, $dateNow);
-
-    if($data['nums'] == 0){
-        $result['free'] = '<span class="badge rounded-pill alert-danger">Belum ada</span>';
-        $result['dp'] = '<span class="badge rounded-pill alert-danger">Belum ada</span>';
-        $result['pelunasan'] = '<span class="badge rounded-pill alert-danger">Belum ada</span>';
-        $result['tgl'] = '-,-';
-    }else{
-        foreach($data['data'] as $row){
-            $result['free'] = $row['pin_free'];
-            $result['dp'] = $row['pin_uang_muka'];
-            $result['pelunasan'] = $row['pin_pelunasan'];
-            $result['tgl'] = ubahFormatTanggal($row['date_create']);
-        }
+    global $pinClass;
+    for($i = 0; $i < $jumlah; $i++){
+        $pin = pinCheck($user,$category);
+        $pinClass->insertPin($user,$pin,$category,$dateNow);
     }
-    return $result;
+}
+
+function pinCheck($user,$category){
+    global $pinClass;
+    $pin = generatePin();
+
+    $dataPin = $pinClass->selectPin("checkPIN",$user,$pin,$category);
+    if($dataPin['nums'] > 0){
+        return pinCheck($user,$category);
+    }else{
+        return $pin;
+    }
 }
 
 // GENERATE PIN
 function generatePin() {
     $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    $pin = '';
+    $pin = 'NRJ';
     
-    for ($i = 0; $i < 12; $i++) {
+    for ($i = 0; $i < 9; $i++) {
         $pin .= $characters[rand(0, strlen($characters) - 1)];
     }
     
     return $pin;
 }
 
-function pinFree(){
-    global $dateNow;
-    global $pinClass;
-    $pin = generatePin();
-
-    $dataPin = $pinClass->selectPin("pinFreeCheck",$pin,$dateNow);
-    if($dataPin['nums'] > 0){
-        return pinFree();
+function statusPin($status){
+    if($status == "BELUM DIGUNAKAN"){
+        return '<span class="badge rounded-pill alert-success">' . $status . '</span>';
     }else{
-        return $pin;
-    }
-}
-function pinDp(){
-    global $dateNow;
-    global $pinClass;
-    $pin = generatePin();
-
-    $dataPin = $pinClass->selectPin("pinUangMukaCheck",$pin,$dateNow);
-    if($dataPin['nums'] > 0){
-        return pinDp();
-    }else{
-        return $pin;
-    }
-}
-function pinPelunasan(){
-    global $dateNow;
-    global $pinClass;
-    $pin = generatePin();
-
-    $dataPin = $pinClass->selectPin("pinPelunasanCheck",$pin,$dateNow);
-    if($dataPin['nums'] > 0){
-        return pinPelunasan();
-    }else{
-        return $pin;
+        return '<span class="badge rounded-pill alert-danger">' . $status . '</span>';
     }
 }
 
@@ -156,5 +181,19 @@ function ubahFormatTanggal($tanggal){
     }
 
     return $tanggalBaru;
+}
+
+// DATA USER
+function dataUser($idUser){
+    global $userClass;
+    $data = $userClass->selectUser("oneCondition","code_referral",$idUser);
+    foreach($data['data'] as $row){
+        $result['name'] = $row['name'];
+        $result['email'] = $row['email'];
+        $result['no_telpn'] = $row['no_telpn'];
+        $result['status'] = $row['status'];
+    }
+    $result['nums'] = $data['nums'];
+    return $result;
 }
 ?>

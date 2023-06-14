@@ -61,9 +61,10 @@ if(isset($_POST['submitPin'])){
         $_SESSION['alertError'] = "Pin tidak boleh kosong.";
         $_SESSION['inputPeunasanNrj'] = false;
     }else{
-        $checkPinDp = $pinClass->selectPin("pinPelunasan",$pinInput,$dateNow,$_SESSION['id_nrjtour']);
+        $checkPinDp = $pinClass->selectPin("checkPIN",$_SESSION['id_nrjtour'],$pinInput,"PIN PELUNASAN");
         if($checkPinDp['nums'] > 0){
             $_SESSION['alertSuccess'] = "Success.";
+            $_SESSION['pinPenUsed'] = $pinInput;
             $_SESSION['inputPeunasanNrj'] = true;
         }else{
             $_SESSION['alertError'] = "Pin tidak berlaku.";
@@ -107,6 +108,8 @@ if(isset($_POST['lunasiPembayaran'])){
             $tglbrg = $_POST['tglbrg'];
             $updateJamaah = $dataJamaahClass->UpdateDataJamaah("tglKeberangkatan","code_order",$idOrder,$tglbrg);
             if($updateJamaah){
+                $pinClass->UpdatePin($_SESSION['id_nrjtour'], $_SESSION['pinPenUsed'], "PIN PELUNASAN");
+                $_SESSION['pinPenUsed'] = "";
                 $_SESSION['alertSuccess'] = "Data tersimpan.";
                 header('Location: menunggu-pelunasan');
                 exit();

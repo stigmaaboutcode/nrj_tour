@@ -221,4 +221,4 @@
 </body>
 
 </html>
-<?php $_SESSION['alertError'] = ""; $_SESSION['alertSuccess'] = ""; ?>
+<?php $_SESSION['alertError'] = ""; $_SESSION['alertSuccess'] = ""; $_SESSION['inputPeunasanNrj'] = false; ?>

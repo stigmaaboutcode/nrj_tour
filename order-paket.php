@@ -11,7 +11,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>ORDER PAKET | NRJ TOUR</title>
+    <title>REGISTRASI | NRJ TOUR</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include "partial/meta.php" ?>
 
@@ -99,12 +99,12 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 class="mb-sm-0">Order Paket</h4>
+                                <h4 class="mb-sm-0">Registrasi</h4>
 
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">NRJ Tour</a></li>
-                                        <li class="breadcrumb-item active">Order Paket</li>
+                                        <li class="breadcrumb-item active">Registrasi</li>
                                     </ol>
                                 </div>
 
@@ -116,7 +116,7 @@
                         <div class="col-12 col-sm-4 mx-auto">
                             <form action="" method="post" class="card">
                                 <div class="card-body">
-                                    <h1 class="card-title">Pin Transaksi DP</h1>
+                                    <h1 class="card-title">Pin Registrasi</h1>
                                     <hr>
                                     <div class="mb-2">
                                         <input type="text" name="pin" id="pin" class="form-control" placeholder="Masukkan pin anda" style="text-transform: uppercase;">
@@ -134,6 +134,46 @@
                             <div class="col-12 col-sm-8 mx-auto">
                                 <form action="" method="post" enctype="multipart/form-data" class="card">
                                     <div class="card-body">
+                                    <?php if(!isset($_GET['usePoin'])){ ?>
+                                        <!-- ===================== START INFORMASI PEMBAYARAN ===================== -->
+                                            <div class="border rounded p-3 mb-2">
+                                                <h1 class="card-title">Pembayaran</h1>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-12 col-sm-12 mb-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="pinFree" name="pinFree">
+                                                            <label class="form-check-label" for="pinFree">PIN FREE</label>
+                                                        </div>
+                                                    </div>
+                                                    <div id="inputpin" class="col-12 col-sm-12 mb-3 hidden">
+                                                        <label for="pinFreeInput" class="form-label">Pin Gratis DP</label>
+                                                        <input class="form-control form-control-sm" type="text" id="pinFreeInput" style="text-transform: uppercase;" name="pinFreeInput" placeholder="Masukkan pin free anda">
+                                                    </div>
+                                                    <div id="kategoriPembayaran" class="col-12 col-sm-6 mb-3">
+                                                        <label for="category" class="form-label">Kategori</label>
+                                                        <select required name="category" id="category" class="form-select form-select-sm">
+                                                            <option value="">--PILIH KATEGORI PEMBAYARAN--</option>
+                                                            <?= optPembayranDP() ?>
+                                                        </select>
+                                                    </div>
+                                                    <div id="kategoriRek" class="col-12 col-sm-6 mb-3">
+                                                        <label for="rek" class="form-label">Rekening Tujuan</label>
+                                                        <select required name="rek" id="rek" class="form-select form-select-sm">
+                                                            <option value="">--PILIH REKENING TUJUAN--</option>
+                                                            <?= optRekTujuan() ?>
+                                                        </select>
+                                                    </div>
+                                                    <div id="kategoriBuktiTf" class="col-12 col-sm-12">
+                                                        <label for="buktiTf" class="form-label">Bukti Transfer</label>
+                                                        <input required type="file" name="buktiTf" id="buktiTf" class="form-control form-control-sm">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        <!-- END INFORMASI PEMBAYARAN -->
+                                        <?php } ?>
+
                                         <?php if(!isset($_GET['usePoin'])){ ?>
                                         <!-- ===================== START AKUN KONSULTAN ===================== -->
                                             <div class="border rounded p-3 mb-2">
@@ -141,7 +181,7 @@
                                                 <hr>
                                                 <div class="row">
                                                     <div class="col-12 col-sm-6 mb-3">
-                                                        <label for="namakonsultan" class="form-label">Nama Konsultan</label>
+                                                        <label for="namakonsultan" class="form-label">Username</label>
                                                         <input required type="text" class="form-control form-control-sm" id="namakonsultan" name="namakonsultan" value="<?= $namakonsultan ?>" placeholder="cth: Dody Setiawan">
                                                     </div>
                                                     <div class="col-12 col-sm-6 mb-3">
@@ -238,45 +278,7 @@
                                             </div>
                                         <!-- END DATA JAMAAH -->
                                         
-                                        <?php if(!isset($_GET['usePoin'])){ ?>
-                                        <!-- ===================== START INFORMASI PEMBAYARAN ===================== -->
-                                            <div class="border rounded p-3 mb-2">
-                                                <h1 class="card-title">Pembayaran</h1>
-                                                <hr>
-                                                <div class="row">
-                                                    <div class="col-12 col-sm-12 mb-3">
-                                                        <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" role="switch" id="pinFree" name="pinFree">
-                                                            <label class="form-check-label" for="pinFree">PIN FREE</label>
-                                                        </div>
-                                                    </div>
-                                                    <div id="inputpin" class="col-12 col-sm-12 mb-3 hidden">
-                                                        <label for="pinFreeInput" class="form-label">Pin Gratis DP</label>
-                                                        <input class="form-control form-control-sm" type="text" id="pinFreeInput" style="text-transform: uppercase;" name="pinFreeInput" placeholder="Masukkan pin free anda">
-                                                    </div>
-                                                    <div id="kategoriPembayaran" class="col-12 col-sm-6 mb-3">
-                                                        <label for="category" class="form-label">Kategori</label>
-                                                        <select required name="category" id="category" class="form-select form-select-sm">
-                                                            <option value="">--PILIH KATEGORI PEMBAYARAN--</option>
-                                                            <?= optPembayranDP() ?>
-                                                        </select>
-                                                    </div>
-                                                    <div id="kategoriRek" class="col-12 col-sm-6 mb-3">
-                                                        <label for="rek" class="form-label">Rekening Tujuan</label>
-                                                        <select required name="rek" id="rek" class="form-select form-select-sm">
-                                                            <option value="">--PILIH REKENING TUJUAN--</option>
-                                                            <?= optRekTujuan() ?>
-                                                        </select>
-                                                    </div>
-                                                    <div id="kategoriBuktiTf" class="col-12 col-sm-12">
-                                                        <label for="buktiTf" class="form-label">Bukti Transfer</label>
-                                                        <input required type="file" name="buktiTf" id="buktiTf" class="form-control form-control-sm">
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        <!-- END INFORMASI PEMBAYARAN -->
-                                        <?php } ?>
+                                        
                                     </div>
                                     <div class="card-footer text-end">
                                         <button type="submit" name="createOrder" class="btn btn-primary btn-sm">Submit</button>
@@ -379,4 +381,4 @@
 </body>
 
 </html>
-<?php $_SESSION['alertError'] = ""; $_SESSION['alertSuccess'] = ""; ?>
+<?php $_SESSION['alertError'] = ""; $_SESSION['alertSuccess'] = ""; $_SESSION['inputOrderNrj'] = false ?>
