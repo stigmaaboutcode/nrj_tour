@@ -23,21 +23,21 @@ if(isset($_POST['addPin'])){
         if($konsultanID != "ALL"){
             if($pinFree && $pinRegistrasi && $pinPelunasan){
                 pinCreated($konsultanID,"PIN FREE",$jumlahPIN);
-                pinCreated($konsultanID,"PIN REGISTRASI",$jumlahPIN);
+                pinCreated($konsultanID,"PIN BERBAYAR",$jumlahPIN);
                 pinCreated($konsultanID,"PIN PELUNASAN",$jumlahPIN);
             }elseif($pinFree && $pinRegistrasi){
                 pinCreated($konsultanID,"PIN FREE",$jumlahPIN);
-                pinCreated($konsultanID,"PIN REGISTRASI",$jumlahPIN);
+                pinCreated($konsultanID,"PIN BERBAYAR",$jumlahPIN);
             }elseif($pinFree && $pinPelunasan){
                 pinCreated($konsultanID,"PIN FREE",$jumlahPIN);
                 pinCreated($konsultanID,"PIN PELUNASAN",$jumlahPIN);
             }elseif($pinRegistrasi && $pinPelunasan){
-                pinCreated($konsultanID,"PIN REGISTRASI",$jumlahPIN);
+                pinCreated($konsultanID,"PIN BERBAYAR",$jumlahPIN);
                 pinCreated($konsultanID,"PIN PELUNASAN",$jumlahPIN);
             }elseif($pinFree){
                 pinCreated($konsultanID,"PIN FREE",$jumlahPIN);
             }elseif($pinRegistrasi){
-                pinCreated($konsultanID,"PIN REGISTRASI",$jumlahPIN);
+                pinCreated($konsultanID,"PIN BERBAYAR",$jumlahPIN);
             }elseif($pinPelunasan){
                 pinCreated($konsultanID,"PIN PELUNASAN",$jumlahPIN);
             }else{
@@ -50,21 +50,21 @@ if(isset($_POST['addPin'])){
             foreach($dataKonsultan['data'] as $rows){
                 if($pinFree && $pinRegistrasi && $pinPelunasan){
                     pinCreated($rows['code_referral'],"PIN FREE",$jumlahPIN);
-                    pinCreated($rows['code_referral'],"PIN REGISTRASI",$jumlahPIN);
+                    pinCreated($rows['code_referral'],"PIN BERBAYAR",$jumlahPIN);
                     pinCreated($rows['code_referral'],"PIN PELUNASAN",$jumlahPIN);
                 }elseif($pinFree && $pinRegistrasi){
                     pinCreated($rows['code_referral'],"PIN FREE",$jumlahPIN);
-                    pinCreated($rows['code_referral'],"PIN REGISTRASI",$jumlahPIN);
+                    pinCreated($rows['code_referral'],"PIN BERBAYAR",$jumlahPIN);
                 }elseif($pinFree && $pinPelunasan){
                     pinCreated($rows['code_referral'],"PIN FREE",$jumlahPIN);
                     pinCreated($rows['code_referral'],"PIN PELUNASAN",$jumlahPIN);
                 }elseif($pinRegistrasi && $pinPelunasan){
-                    pinCreated($rows['code_referral'],"PIN REGISTRASI",$jumlahPIN);
+                    pinCreated($rows['code_referral'],"PIN BERBAYAR",$jumlahPIN);
                     pinCreated($rows['code_referral'],"PIN PELUNASAN",$jumlahPIN);
                 }elseif($pinFree){
                     pinCreated($rows['code_referral'],"PIN FREE",$jumlahPIN);
                 }elseif($pinRegistrasi){
-                    pinCreated($rows['code_referral'],"PIN REGISTRASI",$jumlahPIN);
+                    pinCreated($rows['code_referral'],"PIN BERBAYAR",$jumlahPIN);
                 }elseif($pinPelunasan){
                     pinCreated($rows['code_referral'],"PIN PELUNASAN",$jumlahPIN);
                 }else{
@@ -120,18 +120,18 @@ function pinCreated($user, $category, $jumlah){
     global $dateNow;
     global $pinClass;
     for($i = 0; $i < $jumlah; $i++){
-        $pin = pinCheck($user,$category);
+        $pin = pinCheck($user);
         $pinClass->insertPin($user,$pin,$category,$dateNow);
     }
 }
 
-function pinCheck($user,$category){
+function pinCheck($user){
     global $pinClass;
     $pin = generatePin();
 
-    $dataPin = $pinClass->selectPin("checkPIN",$user,$pin,$category);
+    $dataPin = $pinClass->selectPin("checkAndCreate",$user,$pin);
     if($dataPin['nums'] > 0){
-        return pinCheck($user,$category);
+        return pinCheck($user);
     }else{
         return $pin;
     }

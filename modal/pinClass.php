@@ -14,7 +14,7 @@ class pinClass extends ConnectionsClass{
                 id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 code_referral VARCHAR(7) NOT NULL,
                 pin VARCHAR(10) NOT NULL,
-                category ENUM('PIN FREE', 'PIN REGISTRASI', 'PIN PELUNASAN') NOT NULL,
+                category ENUM('PIN FREE', 'PIN BERBAYAR', 'PIN PELUNASAN') NOT NULL,
                 status ENUM('BELUM DIGUNAKAN', 'SUDAH DIGUNAKAN') NOT NULL DEFAULT 'BELUM DIGUNAKAN',
                 date_create DATE NOT NULL
             )";
@@ -51,6 +51,8 @@ class pinClass extends ConnectionsClass{
         // SET QUERY
         if($param == "checkPIN"){
             $sql = "SELECT pin FROM " . $this->table_name . " WHERE code_referral = '" . $key1 . "' AND pin = '" . $key2 . "' AND category = '" . $key3 . "' AND status = 'BELUM DIGUNAKAN'";
+        }elseif($param == "checkAndCreate"){
+            $sql = "SELECT pin FROM " . $this->table_name . " WHERE code_referral = '" . $key1 . "' AND pin = '" . $key2 . "' AND status = 'BELUM DIGUNAKAN'";
         }elseif($param == "UserPin"){
             $sql = "SELECT code_referral, pin, category, status, date_create FROM " . $this->table_name . " WHERE code_referral = '" . $key1 . "' ORDER BY id DESC";
         }else{

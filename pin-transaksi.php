@@ -108,10 +108,10 @@
                                             <input required type="number" name="jumlahPin" id="jumlahPin" class="form-control form-control-sm" placeholder="Masukkan Jumlah PIN">
                                         </div>  
                                         <div class="col-12 col-sm-12 mb-3">
-                                            <label for="categoryPin" class="form-label">Kategori</label>
+                                            <label for="categoryPin" class="form-label">Jenis PIN</label>
                                             <div style="display: flex; justify-content: space-around;">
                                             <?php
-                                                $opt = array('pinFree'=>'PIN FREE', 'pinRegis'=>'PIN REGISTRASI', 'pinPelunasan'=>'PIN PELUNASAN');
+                                                $opt = array('pinFree'=>'PIN FREE', 'pinRegis'=>'PIN BERBAYAR', 'pinPelunasan'=>'PIN PELUNASAN');
                                                 foreach($opt as $key => $checkbox){
                                             ?>
                                                 <div class="form-check">
@@ -143,7 +143,7 @@
                                                 <th>Konsultan</th>
                                                 <?php } ?>
                                                 <th>PIN</th>
-                                                <th>Kategori</th>
+                                                <th>Jenis PIN</th>
                                                 <th>Status</th>
                                                 <th>Tanggal</th>
                                             </tr>
