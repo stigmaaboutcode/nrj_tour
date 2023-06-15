@@ -213,7 +213,7 @@ function dataTable(){
         $data = $dataPenjualanClass->selectDataPenjualan("all");
     }
     foreach($data['data'] as $row){
-        $btn = $row['status'] == "PENDING" ? '<a href="pending-dp?idOrder=' . $row['code_order'] . '&param=delete" class="btn btn-sm btn-danger"><i class="mx-auto ri-delete-bin-line"></i></a>' : '<a href="#resend' . $row['code_order'] . '" data-bs-toggle="modal" class="btn btn-sm btn-warning"><i class="mx-auto ri-restart-line"></i></a><a href="pending-dp?idOrder=' . $row['code_order'] . '&param=delete" class="btn btn-sm btn-danger"><i class="mx-auto ri-delete-bin-line"></i></a>';
+        $btn = $row['status'] == "PENDING" ? '-,-' : '<a href="#resend' . $row['code_order'] . '" data-bs-toggle="modal" class="btn btn-sm btn-warning"><i class="mx-auto ri-restart-line"></i></a><a href="pending-dp?idOrder=' . $row['code_order'] . '&param=delete" class="btn btn-sm btn-danger"><i class="mx-auto ri-delete-bin-line"></i></a>';
         $show = $row['status'] == "PENDING" || $row['status'] == "DITOLAK" ? true : false;
         if($role_user == "ADMIN"){
             $btn = '<a href="#confirmDp' . $row['code_order'] . '" data-bs-toggle="modal" class="btn btn-sm btn-success"><i class="mx-auto ri-check-line"></i></a>';
