@@ -30,26 +30,31 @@ if(isset($_GET['user'])){
 
 if(isset($_POST['submit'])){
     $email = trim($_POST['email']);
-    $nama = ucwords(trim($_POST['nama']));
+    $nama = strtolower(trim($_POST['nama']));
     $notelpn = $formatInputClass->Notelpn(trim($_POST['notelpn']));
 
     if($email == "" || $nama == "" || $notelpn == ""){
         $_SESSION['alertError'] = "Data tidak boleh kosong.";
     }else{
-        // CHECK EMAIL 
-        $emailCheck = $userClass->selectUser("checkForUpdate","email",$email,$_GET['user']);
-        if($emailCheck['nums'] > 0){
-            $_SESSION['alertError'] = "Email sudah terdaftar.";
+        $checkName = $userClass->selectUser("checkForUpdate","name",$nama,$_GET['user']);
+        if($checkName['nums'] > 0){
+            $_SESSION['alertError'] = "Username sudah terdaftar.";
         }else{
-            $noTelpnCheck = $userClass->selectUser("checkForUpdate","no_telpn",$notelpn,$_GET['user']);
-            if($noTelpnCheck['nums'] > 0){
-                $_SESSION['alertError'] = "Nomor Telpn sudah terdaftar.";
+            // CHECK EMAIL 
+            $emailCheck = $userClass->selectUser("checkForUpdate","email",$email,$_GET['user']);
+            if($emailCheck['nums'] > 0){
+                $_SESSION['alertError'] = "Email sudah terdaftar.";
             }else{
-                $updateData = $userClass->UpdateUser("editData",$_GET['user'],$email,$nama,$notelpn);
-                if($updateData){
-                    $_SESSION['alertSuccess'] = "Data berhasil diubah.";
-                    header('Location: data-member');
-                    exit();
+                $noTelpnCheck = $userClass->selectUser("checkForUpdate","no_telpn",$notelpn,$_GET['user']);
+                if($noTelpnCheck['nums'] > 0){
+                    $_SESSION['alertError'] = "Nomor Telpn sudah terdaftar.";
+                }else{
+                    $updateData = $userClass->UpdateUser("editData",$_GET['user'],$email,$nama,$notelpn);
+                    if($updateData){
+                        $_SESSION['alertSuccess'] = "Data berhasil diubah.";
+                        header('Location: data-member');
+                        exit();
+                    }
                 }
             }
         }

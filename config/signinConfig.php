@@ -35,7 +35,29 @@ if(isset($_POST['login'])){
     }else{
         $checkAuth = $userClass->selectUser("oneCondition","email",$email);
         if($checkAuth['nums'] == 0){
-            $_SESSION['alertError'] = "email / password anda salah!";
+            $checkAuthByName = $userClass->selectUser("oneCondition","name",$email);
+            if($checkAuthByName['nums'] == 0){
+                $_SESSION['alertError'] = "Login Invalid!";
+            }else{
+                foreach($checkAuthByName['data'] as $row){
+                    $id_user = $row['code_referral'];
+                    $passwordDb = $row['password'];
+                    $status = $row['status'];
+                }
+                if(!password_verify($password, $passwordDb)){
+                    $_SESSION['alertError'] = "Login Invalid!";
+                }else{
+                    if($status == "TIDAK AKTIF"){
+                        $_SESSION['alertError'] = "akun anda belum diaktifkan!";
+                    }else{
+                        $_SESSION['loginNRJ'] = true;
+                        $_SESSION['id_nrjtour'] = $id_user;
+                        $_SESSION['alertSuccess'] = "Login Success!";
+                        header('Location: dasbor');
+                        exit();
+                    }
+                }
+            }
         }else{
             foreach($checkAuth['data'] as $row){
                 $id_user = $row['code_referral'];
@@ -43,7 +65,7 @@ if(isset($_POST['login'])){
                 $status = $row['status'];
             }
             if(!password_verify($password, $passwordDb)){
-                $_SESSION['alertError'] = "email / password anda salah!";
+                $_SESSION['alertError'] = "Login Invalid!";
             }else{
                 if($status == "TIDAK AKTIF"){
                     $_SESSION['alertError'] = "akun anda belum diaktifkan!";

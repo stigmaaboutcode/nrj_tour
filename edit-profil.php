@@ -86,9 +86,9 @@
                                                 name="email" required placeholder="Masukkan Email Anda" value="<?= $email ?>">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="nama" class="form-label">Nama Lengkap</label>
+                                            <label for="nama" class="form-label">Username</label>
                                             <input type="text" class="form-control form-control-sm" id="nama"
-                                                name="nama" required placeholder="Masukkan nama Anda" value="<?= $name ?>">
+                                                name="nama" required placeholder="Masukkan Username Anda" value="<?= $name ?>">
                                         </div>
                                         <div class="mb-3">
                                             <label for="notelpn" class="form-label">No. WhatsApp (62)</label>
