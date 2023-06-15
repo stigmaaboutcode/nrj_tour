@@ -26,6 +26,7 @@ if(isset($_GET['usePoin'])){
     if($usePoin == "ya"){
         // JUMLAH POIN
         $jumlahPoin = walletUser()['poin'];
+        $ketDis = "DISKON 100%";
         // UNTUK POIN PRIBADI HARUS LEBIH DARI ATAU SAMA DENGAN 10 UNTUK DAPAT DIGUNAKAN 
         if($jumlahPoin < 10){
             $_SESSION['alertError'] = "Poin tidak cukup!";
@@ -43,18 +44,23 @@ if(isset($_POST['submitPin'])){
     $pinInput = strtoupper(trim($_POST['pin']));
     if($pinInput == ""){
         $_SESSION['alertError'] = "Pin tidak boleh kosong.";
-        $_SESSION['inputOrderNrj'] = false;
         header('Location: order-paket');
         exit();
     }else{
-        $checkPinDp = $pinClass->selectPin("checkPIN",$_SESSION['id_nrjtour'],$pinInput,"PIN REGISTRASI");
-        if($checkPinDp['nums'] > 0){
+        $checkPinBerbayar = $pinClass->selectPin("checkPIN",$_SESSION['id_nrjtour'],$pinInput,"PIN BERBAYAR");
+        if($checkPinBerbayar['nums'] > 0){
+            $ketDis = "BERBAYARAN";
             $_SESSION['alertSuccess'] = "Success.";
-            $_SESSION['pinRegisUsed'] = $pinInput;
-            $_SESSION['inputOrderNrj'] = true;
         }else{
-            $_SESSION['alertError'] = "Pin tidak berlaku.";
-            $_SESSION['inputOrderNrj'] = false;
+            $checkPinFree = $pinClass->selectPin("checkPIN",$_SESSION['id_nrjtour'],$pinInput,"PIN FREE");
+            if($checkPinFree['nums'] > 0){
+                $ketDis = "DISKON DP";
+                $_SESSION['alertSuccess'] = "Success.";
+            }else{
+                $_SESSION['alertError'] = "Pin tidak berlaku.";
+                header('Location: order-paket');
+                exit();
+            }
         }
     }
 }
@@ -71,43 +77,33 @@ if(isset($_POST['createOrder'])){
     if(!isset($_GET['usePoin'])){
         $getMakeKonsultan = true;
         // DATA CALON KONSULTAN
-        $namakonsultan = ucwords(trim($_POST['namakonsultan']));
+        $namakonsultan = strtolower(trim($_POST['namakonsultan']));
         $emailkonsultan = strtolower(trim($_POST['emailkonsultan']));
         $nowakonsultan = $formatInputClass->Notelpn(trim($_POST['nowakonsultan']));
         $passkonsultan = trim($_POST['passkonsultan']);
         // DATA PEMBAYARAN
-        $isDiskon = "TIDAK ADA";
-        $pinFreeCheck = isset($_POST['pinFree']) ? true : false;
-        // MENGGUNAKAN POIN DAN LIMIT POIN BLM MENCAPAI BATAS
-        if($pinFreeCheck){
-            $pinFree = strtoupper(trim($_POST['pinFreeInput']));
-            $checkPinFree = $pinClass->selectPin("checkPIN",$_SESSION['id_nrjtour'],$pinFree,"PIN FREE");
-            // PIN TERSEDIA 
-            if($checkPinFree['nums'] > 0){
-                $pinClass->UpdatePin($_SESSION['id_nrjtour'],$pinFree,"PIN FREE");
-                $isDiskon = "GRATIS DP";
-
-            }else{
-                $getMakeKonsultan = false;
-                $inputKonsultan = false;
-                $_SESSION['alertError'] = "Pin Free tidak berlaku.";
-            }
-        }
+        $isDiskon = $_POST['ketDis'] == "DISKON DP" ? "GRATIS DP" : "TIDAK ADA";
         if($getMakeKonsultan){
-            $checkEmail = $userClass->selectUser("oneCondition","email",$emailkonsultan);
-            if($checkEmail['nums'] > 0){
+            $checkName = $userClass->selectUser("oneCondition","name",$namakonsultan);
+            if($checkName['nums'] > 0){
                 $inputKonsultan = false;
-                $_SESSION['alertError'] = "Email sudah terdaftar.";
+                $_SESSION['alertError'] = "Username sudah terdaftar.";
             }else{
-                $checkNoTelpn = $userClass->selectUser("oneCondition","no_telpn",$nowakonsultan);
-                if($checkNoTelpn['nums'] > 0){
+                $checkEmail = $userClass->selectUser("oneCondition","email",$emailkonsultan);
+                if($checkEmail['nums'] > 0){
                     $inputKonsultan = false;
-                    $_SESSION['alertError'] = "No Telpn sudah terdaftar.";
+                    $_SESSION['alertError'] = "Email sudah terdaftar.";
                 }else{
-                    $codeReferralKonsultan = generateRef();
-                    $inputKonsultan = $userClass->insertUser($codeReferralKonsultan,$emailkonsultan,$namakonsultan,$nowakonsultan,password_hash($passkonsultan, PASSWORD_DEFAULT),$_SESSION['id_nrjtour'],$dateTimeNow);
+                    $checkNoTelpn = $userClass->selectUser("oneCondition","no_telpn",$nowakonsultan);
+                    if($checkNoTelpn['nums'] > 0){
+                        $inputKonsultan = false;
+                        $_SESSION['alertError'] = "No Telpn sudah terdaftar.";
+                    }else{
+                        $codeReferralKonsultan = generateRef();
+                        $inputKonsultan = $userClass->insertUser($codeReferralKonsultan,$emailkonsultan,$namakonsultan,$nowakonsultan,password_hash($passkonsultan, PASSWORD_DEFAULT),$_SESSION['id_nrjtour'],$dateTimeNow);
+                    }
+        
                 }
-    
             }
         }
     }
@@ -170,17 +166,17 @@ if(isset($_POST['createOrder'])){
                     // PENGURANGAN SALDO POIN
                     $totalPoin = $jumlahPoin - 10;
                     $updateWallet = $walletClass->UpdateWallet("poin_balance",$totalPoin,$_SESSION['id_nrjtour']);
-
                     if($updateWallet){
-                        $pinClass->UpdatePin($_SESSION['id_nrjtour'], $_SESSION['pinRegisUsed'], "PIN REGISTRASI");
-                        $_SESSION['pinRegisUsed'] = "";
                         $_SESSION['alertSuccess'] = "Data tersimpan.";
                         header('Location: order-paket');
                         exit();
                     }
                 }else{
-                    $pinClass->UpdatePin($_SESSION['id_nrjtour'], $_SESSION['pinRegisUsed'], "PIN REGISTRASI");
-                    $_SESSION['pinRegisUsed'] = "";
+                    if($isDiskon == "GRATIS DP"){
+                        $pinClass->UpdatePin($_SESSION['id_nrjtour'], $_POST['pinvALID'], "PIN FREE");
+                    }else{
+                        $pinClass->UpdatePin($_SESSION['id_nrjtour'], $_POST['pinvALID'], "PIN BERBAYAR");
+                    }
                     $_SESSION['alertSuccess'] = "Data tersimpan.";
                     header('Location: order-paket');
                     exit();
@@ -191,18 +187,6 @@ if(isset($_POST['createOrder'])){
     }
 }
 
-// CHECK PENGGUNAAN PIN
-function checkUsedPinFree(){
-    global $dataPenjualanClass;
-    $use = 0;
-    $data = $dataPenjualanClass->selectDataPenjualan("oneCondition", "perekrut", $_SESSION['id_nrjtour']);
-    foreach($data['data'] as $row){
-        if($row['is_diskon'] == "GRATIS DP"){
-            $use += 1; 
-        }
-    }
-    return $use;
-}
 
 function generateCodeOrder(){
     global $dateNow; // DATETIME NOW

@@ -111,12 +111,12 @@
                             </div>
                         </div>
                     </div>
-                    <?php if(!$_SESSION['inputOrderNrj']){ ?>
+                    <?php if(!isset($_POST['submitPin']) && !isset($_GET['usePoin'])){ ?>
                     <div class="row">
                         <div class="col-12 col-sm-4 mx-auto">
                             <form action="" method="post" class="card">
                                 <div class="card-body">
-                                    <h1 class="card-title">Pin Registrasi</h1>
+                                    <h1 class="card-title">Pin Berbayar / Free</h1>
                                     <hr>
                                     <div class="mb-2">
                                         <input type="text" name="pin" id="pin" class="form-control" placeholder="Masukkan pin anda" style="text-transform: uppercase;">
@@ -133,23 +133,15 @@
                         <div class="row">
                             <div class="col-12 col-sm-8 mx-auto">
                                 <form action="" method="post" enctype="multipart/form-data" class="card">
+                                    <input type="hidden" name="ketDis" value="<?= $ketDis ?>">
+                                    <input type="hidden" name="pinvALID" value="<?= $pinInput ?>">
                                     <div class="card-body">
-                                    <?php if(!isset($_GET['usePoin'])){ ?>
+                                        <?php if($ketDis != "DISKON 100%" && $ketDis != "DISKON DP"){ ?>
                                         <!-- ===================== START INFORMASI PEMBAYARAN ===================== -->
                                             <div class="border rounded p-3 mb-2">
                                                 <h1 class="card-title">Pembayaran</h1>
                                                 <hr>
                                                 <div class="row">
-                                                    <div class="col-12 col-sm-12 mb-3">
-                                                        <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" role="switch" id="pinFree" name="pinFree">
-                                                            <label class="form-check-label" for="pinFree">PIN FREE</label>
-                                                        </div>
-                                                    </div>
-                                                    <div id="inputpin" class="col-12 col-sm-12 mb-3 hidden">
-                                                        <label for="pinFreeInput" class="form-label">Pin Gratis DP</label>
-                                                        <input class="form-control form-control-sm" type="text" id="pinFreeInput" style="text-transform: uppercase;" name="pinFreeInput" placeholder="Masukkan pin free anda">
-                                                    </div>
                                                     <div id="kategoriPembayaran" class="col-12 col-sm-6 mb-3">
                                                         <label for="category" class="form-label">Kategori</label>
                                                         <select required name="category" id="category" class="form-select form-select-sm">
@@ -174,7 +166,7 @@
                                         <!-- END INFORMASI PEMBAYARAN -->
                                         <?php } ?>
 
-                                        <?php if(!isset($_GET['usePoin'])){ ?>
+                                        <?php if($ketDis != "DISKON 100%"){ ?>
                                         <!-- ===================== START AKUN KONSULTAN ===================== -->
                                             <div class="border rounded p-3 mb-2">
                                                 <h1 class="card-title">Akun Konsultan</h1>
@@ -182,7 +174,7 @@
                                                 <div class="row">
                                                     <div class="col-12 col-sm-6 mb-3">
                                                         <label for="namakonsultan" class="form-label">Username</label>
-                                                        <input required type="text" class="form-control form-control-sm" id="namakonsultan" name="namakonsultan" value="<?= $namakonsultan ?>" placeholder="cth: Dody Setiawan">
+                                                        <input required type="text" class="form-control form-control-sm" id="namakonsultan" name="namakonsultan" value="<?= $namakonsultan ?>" placeholder="cth: dodi77">
                                                     </div>
                                                     <div class="col-12 col-sm-6 mb-3">
                                                         <label for="emailkonsultan" class="form-label">Email</label>
@@ -308,53 +300,6 @@
     <script src="assets/libs/node-waves/waves.min.js"></script>
 
     <script src="assets/js/app.js"></script>
-    <script>
-        var checkbox = document.getElementById('pinFree');
-        var inputpin = document.getElementById('inputpin');
-        var pinFreeInput = document.getElementById('pinFreeInput');
-        var kategoriPembayaran = document.getElementById('kategoriPembayaran');
-        var kategoriRek = document.getElementById('kategoriRek');
-        var kategoriBuktiTf = document.getElementById('kategoriBuktiTf');
-        
-        var category = document.getElementById('category');
-        var rek = document.getElementById('rek');
-        var buktiTf = document.getElementById('buktiTf');
-
-        checkbox.addEventListener('click', function() {
-            if (checkbox.checked) {
-                var jumlahUse = parseInt('<?= checkUsedPinFree() ?>');
-                if(jumlahUse > 9){
-                    checkbox.checked = false;
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Limit Mencapai Batas.',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }else{
-                    inputpin.classList.remove('hidden');
-                    kategoriPembayaran.classList.add('hidden');
-                    kategoriRek.classList.add('hidden');
-                    kategoriBuktiTf.classList.add('hidden');
-
-                    category.removeAttribute("required");
-                    rek.removeAttribute("required");
-                    buktiTf.removeAttribute("required");
-                    pinFreeInput.setAttribute("required", "");
-                }
-            } else {
-                inputpin.classList.add('hidden');
-                kategoriPembayaran.classList.remove('hidden');
-                kategoriRek.classList.remove('hidden');
-                kategoriBuktiTf.classList.remove('hidden');
-                
-                pinFreeInput.removeAttribute("required");
-                category.setAttribute("required", "");
-                rek.setAttribute("required", "");
-                buktiTf.setAttribute("required", "");
-            }
-        });
-    </script>
     <!-- Sweet Alerts js -->
     <script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
     <?php if($_SESSION['alertSuccess'] != ""){ ?>
@@ -381,4 +326,4 @@
 </body>
 
 </html>
-<?php $_SESSION['alertError'] = ""; $_SESSION['alertSuccess'] = ""; $_SESSION['inputOrderNrj'] = false ?>
+<?php $_SESSION['alertError'] = ""; $_SESSION['alertSuccess'] = ""; ?>
