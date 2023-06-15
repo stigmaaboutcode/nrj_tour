@@ -74,7 +74,7 @@
                             </div>
                         </div>
                     </div>
-                    <?php if(!$_SESSION['inputPeunasanNrj']){ ?>
+                    <?php if(!$valid_pin && $is_diskon != "GRATIS DP & PELUNASAN"){ ?>
                     <div class="row">
                         <div class="col-12 col-sm-4 mx-auto">
                             <form action="" method="post" class="card">
@@ -96,6 +96,7 @@
                         <div class="row">
                             <div class="col-12 col-sm-6 mx-auto">
                                 <form action="" method="post" enctype="multipart/form-data" class="card">
+                                    <input type="hidden" name="pinvALID" value="<?= $pinInput ?>">
                                     <div class="card-body">
                                         <div class="border rounded p-3 mb-2">
                                             <h1 class="card-title">Umroh / Haji</h1>
@@ -221,4 +222,4 @@
 </body>
 
 </html>
-<?php $_SESSION['alertError'] = ""; $_SESSION['alertSuccess'] = ""; $_SESSION['inputPeunasanNrj'] = false; ?>
+<?php $_SESSION['alertError'] = ""; $_SESSION['alertSuccess'] = "";?>
